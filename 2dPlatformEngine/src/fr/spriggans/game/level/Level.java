@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.spriggans.game.Inputs;
 import fr.spriggans.game.level.levelObjects.AbstractLevelElement;
+import fr.spriggans.game.level.levelObjects.background.Background;
 import fr.spriggans.game.level.levelObjects.entities.Player;
 import fr.spriggans.game.level.levelObjects.landscape.LandscapeNotCollidable;
 import fr.spriggans.gfx.Screen;
@@ -36,10 +37,12 @@ public class Level {
 
 	public Level(Inputs inputs) {
 		// TODO LOAD THIS DIFFERENTLY.
-		this.width = 3000;
-		this.height = 2000;
+		this.width = 2000;
+		this.height = 1100;
 
 		livingEntitiesLayer.add(new Player(200, 200, inputs));
+
+		backgroundLayer.add(new Background(0, 0));
 
 		// TODO UN-TEST
 		final int s = 50;

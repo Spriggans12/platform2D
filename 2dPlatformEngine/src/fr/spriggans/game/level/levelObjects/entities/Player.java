@@ -2,10 +2,14 @@ package fr.spriggans.game.level.levelObjects.entities;
 
 import fr.spriggans.game.Inputs;
 import fr.spriggans.game.level.levelObjects.AbstractLevelElement;
+import fr.spriggans.gfx.Bitmap;
 import fr.spriggans.gfx.Screen;
 
 public class Player extends AbstractLevelElement {
 	Inputs inputs;
+
+	// TODO : RM ME : utilisé juste pour le test.
+	private boolean isFacingLeft = false;
 
 	public Player(int x, int y, Inputs input) {
 		super(x, y);
@@ -17,10 +21,14 @@ public class Player extends AbstractLevelElement {
 	public void tick() {
 		final int speed = 12;
 
-		if (inputs.left.isPressed())
+		if (inputs.left.isPressed()) {
 			x -= speed;
-		if (inputs.right.isPressed())
+			isFacingLeft = true;
+		}
+		if (inputs.right.isPressed()) {
 			x += speed;
+			isFacingLeft = false;
+		}
 		if (inputs.down.isPressed())
 			y += speed;
 		if (inputs.up.isPressed())
@@ -39,20 +47,26 @@ public class Player extends AbstractLevelElement {
 	public int getXOffset(Screen screen, int lvlWidth) {
 		if (lvlWidth < screen.getWidth())
 			return (lvlWidth - screen.getWidth()) / 2;
-		if (x <= screen.xOffs + screen.BOUNDING_BOX)
-			return x - screen.BOUNDING_BOX;
-		if (x >= screen.xOffs + screen.getWidth() - screen.BOUNDING_BOX)
-			return x - screen.getWidth() + screen.BOUNDING_BOX;
+		if (x <= screen.xOffs + screen.screenSlideDistance)
+			return x - screen.screenSlideDistance;
+		if (x >= screen.xOffs + screen.getWidth() - screen.screenSlideDistance)
+			return x - screen.getWidth() + screen.screenSlideDistance;
 		return screen.xOffs;
 	}
 
 	public int getYOffset(Screen screen, int lvlHeight) {
 		if (lvlHeight < screen.getHeight())
 			return (lvlHeight - screen.getHeight()) / 2;
-		if (y <= screen.yOffs + screen.BOUNDING_BOX)
-			return y - screen.BOUNDING_BOX;
-		if (y >= screen.yOffs + screen.getHeight() - screen.BOUNDING_BOX)
-			return y - screen.getHeight() + screen.BOUNDING_BOX;
+		if (y <= screen.yOffs + screen.screenSlideDistance)
+			return y - screen.screenSlideDistance;
+		if (y >= screen.yOffs + screen.getHeight() - screen.screenSlideDistance)
+			return y - screen.getHeight() + screen.screenSlideDistance;
 		return screen.yOffs;
+	}
+
+	@Override
+	public void render(Screen screen, int xOffs, int yOffs) {
+		Bitmap.GASPARD.render(screen, x, y,
+				isFacingLeft ? Screen.MIRROR_HORIZONTAL : 0);
 	}
 }

@@ -6,9 +6,15 @@ package fr.spriggans.gfx;
  * @author Spriggans
  */
 public class Screen {
+	public static final int MIRROR_HORIZONTAL = 1;
+	public static final int MIRROR_VERTICAL = 2;
 
-	// TODO : rename me !!!
-	public final int BOUNDING_BOX = 200;
+	/**
+	 * Lorsque le player arrive à cette distance du bord de la map, la view se
+	 * décale. TODO : Comportement à changer lorsque la classe caméra arrivera.
+	 * TODO : Ajouter un sliderDistance vertical et horinzontal.
+	 */
+	public int screenSlideDistance = 200;
 
 	private int width;
 	private int height;
@@ -26,6 +32,8 @@ public class Screen {
 		width = w;
 		height = h;
 		pixels = new int[width * height];
+
+		screenSlideDistance = (Math.min(w, h)) / 2;
 	}
 
 	/**
@@ -75,9 +83,26 @@ public class Screen {
 		pixels[yPxl * width + xPxl] = p;
 	}
 
-	public void renderPixels(int[] pxls, int w, int h, int x, int y) {
+	public void renderPixels(int[] pxls, int w, int h, int x, int y,
+			int mirrorBits) {
 		if (isOutsideScreen(x - xOffs, y - yOffs, w, h))
 			return;
+		if ((mirrorBits & MIRROR_HORIZONTAL) == MIRROR_HORIZONTAL) {
+			if ((mirrorBits & MIRROR_VERTICAL) == MIRROR_VERTICAL)
+				for (int j = 0; j < h; j++)
+					for (int i = 0; i < w; i++)
+						renderPixel(pxls[j * w + i], x + w - i, y + h - j);
+			else
+				for (int j = 0; j < h; j++)
+					for (int i = 0; i < w; i++)
+						renderPixel(pxls[j * w + i], x + w - i, y + j);
+			return;
+		} else if ((mirrorBits & MIRROR_VERTICAL) == MIRROR_VERTICAL) {
+			for (int j = 0; j < h; j++)
+				for (int i = 0; i < w; i++)
+					renderPixel(pxls[j * w + i], x + i, y + h - j);
+			return;
+		}
 		for (int j = 0; j < h; j++)
 			for (int i = 0; i < w; i++)
 				renderPixel(pxls[j * w + i], x + i, y + j);

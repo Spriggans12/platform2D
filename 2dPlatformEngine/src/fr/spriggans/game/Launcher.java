@@ -1,7 +1,7 @@
 package fr.spriggans.game;
 
 public class Launcher {
-	private static final int WIDTH = 900;
+	private static final int WIDTH = 1200;
 	private static final int HEIGHT = WIDTH * 9 / 16;
 
 	public static void main(String[] args) {

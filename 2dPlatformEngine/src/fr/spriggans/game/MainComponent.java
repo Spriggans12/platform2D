@@ -14,7 +14,7 @@ import fr.spriggans.gfx.Screen;
 
 public class MainComponent extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
-	private static boolean DEBUG = false;
+	private static boolean DEBUG = true;
 	private boolean running = false;
 	private Screen screen;
 	private BufferedImage img;
