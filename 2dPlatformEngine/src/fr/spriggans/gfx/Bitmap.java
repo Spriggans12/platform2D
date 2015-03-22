@@ -7,10 +7,15 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Un Bitmap est utilisé pour charger une image qui n'est pas animée.
+ */
 public class Bitmap {
 	public static final Bitmap[] bitmaps = new Bitmap[128];
-	public static final Bitmap GASPARD = new Bitmap(0, "res/gaspard.png", 0, 0);
-	public static final Bitmap BG_TEST = new Bitmap(1, "res/bg_test.jpg", 0, 0);
+	public static final Bitmap GASPARD = new Bitmap(0,
+			"res/bitmaps/gaspard.png", 0, 0);
+	public static final Bitmap BG_TEST = new Bitmap(1,
+			"res/bitmaps/bg_test.jpg", 0, 0);
 
 	private int id;
 	/** Si l'objet est en x0, on commence à dessiner le bitmap à x0 - xCenter */
@@ -58,7 +63,7 @@ public class Bitmap {
 	}
 
 	/**
-	 * Render.
+	 * Render. Bits stockés dans Screen.
 	 */
 	public void render(Screen screen, int x, int y, int mirrorBits) {
 		screen.renderPixels(pixels, width, height, x - xCenter, y - yCenter,

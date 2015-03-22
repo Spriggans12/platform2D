@@ -52,8 +52,8 @@ public class Screen {
 	 * x,y coin NW.
 	 */
 	public void renderRectangle(int x, int y, int w, int h, int col) {
-		x -= xOffs;// + w / 2;
-		y -= yOffs;// + h / 2;
+		x -= xOffs;
+		y -= yOffs;
 		for (int j = 0; j < h; j++) {
 			final int jPixel = j + y;
 			if (jPixel < compHeight1 || jPixel >= compHeight2)
@@ -83,6 +83,9 @@ public class Screen {
 		pixels[yPxl * width + xPxl] = p;
 	}
 
+	/**
+	 * x,y coin NW.
+	 */
 	public void renderPixels(int[] pxls, int w, int h, int x, int y,
 			int mirrorBits) {
 		if (isOutsideScreen(x - xOffs, y - yOffs, w, h))

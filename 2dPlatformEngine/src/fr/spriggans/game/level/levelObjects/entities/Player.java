@@ -2,46 +2,58 @@ package fr.spriggans.game.level.levelObjects.entities;
 
 import fr.spriggans.game.Inputs;
 import fr.spriggans.game.level.levelObjects.AbstractLevelElement;
-import fr.spriggans.gfx.Bitmap;
+import fr.spriggans.gfx.Animation;
 import fr.spriggans.gfx.Screen;
 
 public class Player extends AbstractLevelElement {
 	Inputs inputs;
+
+	// TODO : Remonter d'un niveau.
+	/** L'animation actuelle jouée par le player. */
+	Animation animation;
 
 	// TODO : RM ME : utilisé juste pour le test.
 	private boolean isFacingLeft = false;
 
 	public Player(int x, int y, Inputs input) {
 		super(x, y);
-		color = 0xFFFF0000;
+
+		animation = Animation.TEST_ANIM_IDDLE;
+
 		this.inputs = input;
 	}
 
 	@Override
 	public void tick() {
-		final int speed = 12;
-
+		final int speed = 6;
 		if (inputs.left.isPressed()) {
 			x -= speed;
 			isFacingLeft = true;
+			if (animation.equals(Animation.TEST_ANIM_IDDLE)) {
+				animation.raz();
+				animation = Animation.TEST_ANIM_WALK;
+			}
 		}
 		if (inputs.right.isPressed()) {
 			x += speed;
 			isFacingLeft = false;
+			if (animation.equals(Animation.TEST_ANIM_IDDLE)) {
+				animation.raz();
+				animation = Animation.TEST_ANIM_WALK;
+			}
 		}
 		if (inputs.down.isPressed())
 			y += speed;
 		if (inputs.up.isPressed())
 			y -= speed;
 
-		// if (x < 0)
-		// x = Level.LEVEL_WIDTH;
-		// if (y < 0)
-		// y = Level.LEVEL_HEIGHT;
-		// if (x > Level.LEVEL_WIDTH)
-		// x = 0;
-		// if (y > Level.LEVEL_HEIGHT)
-		// y = 0;
+		if (!inputs.left.isPressed() && !inputs.right.isPressed()) {
+			if (animation.equals(Animation.TEST_ANIM_WALK)) {
+				animation.raz();
+				animation = Animation.TEST_ANIM_IDDLE;
+			}
+		}
+		animation.tick();
 	}
 
 	public int getXOffset(Screen screen, int lvlWidth) {
@@ -65,8 +77,8 @@ public class Player extends AbstractLevelElement {
 	}
 
 	@Override
-	public void render(Screen screen, int xOffs, int yOffs) {
-		Bitmap.GASPARD.render(screen, x, y,
-				isFacingLeft ? Screen.MIRROR_HORIZONTAL : 0);
+	public void render(Screen screen) {
+		animation.render(screen, x, y, isFacingLeft ? Screen.MIRROR_HORIZONTAL
+				: 0);
 	}
 }

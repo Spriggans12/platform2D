@@ -37,14 +37,8 @@ public class MainComponent extends Canvas implements Runnable {
 		frame.setResizable(false);
 		frame.setVisible(true);
 		screen = new Screen(w, h);
-
 		inputs = new Inputs(this);
-
 		game = new Game(inputs, screen);
-
-		// player = new Player(Level.LEVEL_WIDTH / 2, Level.LEVEL_HEIGHT / 2,
-		// level, inputs);
-
 		img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
 	}
@@ -117,16 +111,13 @@ public class MainComponent extends Canvas implements Runnable {
 
 	private void render() {
 		final BufferStrategy bs = getBufferStrategy();
-
 		if (bs == null) {
 			createBufferStrategy(2);
 			return;
 		}
-
 		game.render(screen);
 		for (int i = 0; i < screen.getPixels().length; i++)
 			pixels[i] = screen.getPixels()[i];
-
 		final Graphics g = bs.getDrawGraphics();
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		g.drawImage(img, 0, 0, getWidth(), getHeight(), null);

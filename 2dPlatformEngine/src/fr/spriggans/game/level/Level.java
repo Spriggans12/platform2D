@@ -15,6 +15,8 @@ public class Level {
 	private int width;
 	private int height;
 
+	// TODO : Changer les types des objets dans les listes ?
+	// TODO : Ajouter la couche player ?
 	/**
 	 * Liste contenant les entités mobiles ayant une IA.
 	 */
@@ -45,19 +47,19 @@ public class Level {
 		backgroundLayer.add(new Background(0, 0));
 
 		// TODO UN-TEST
-		final int s = 50;
-
+		final int s = 30;
 		landscapeLayer.add(new LandscapeNotCollidable(0, 0, width, s));
 		landscapeLayer.add(new LandscapeNotCollidable(0, height - s, width, s));
-
 		landscapeLayer.add(new LandscapeNotCollidable(0, 0, s, height));
 		landscapeLayer.add(new LandscapeNotCollidable(width - s, 0, s, height));
-
 	}
 
 	public void tick() {
 		for (final AbstractLevelElement entity : livingEntitiesLayer) {
 			entity.tick();
+		}
+		for (final AbstractLevelElement interactive : interactiveLayer) {
+			interactive.tick();
 		}
 	}
 
@@ -88,22 +90,19 @@ public class Level {
 				yOffs = height - screen.getHeight();
 		}
 		screen.setOffsets(xOffs, yOffs);
-
-		screen.blackOut();
-
 		screen.blackOut();
 
 		for (final AbstractLevelElement bg : backgroundLayer) {
-			bg.render(screen, xOffs, yOffs);
+			bg.render(screen);
 		}
 		for (final AbstractLevelElement land : landscapeLayer) {
-			land.render(screen, xOffs, yOffs);
+			land.render(screen);
 		}
 		for (final AbstractLevelElement interactive : interactiveLayer) {
-			interactive.render(screen, xOffs, yOffs);
+			interactive.render(screen);
 		}
 		for (final AbstractLevelElement entity : livingEntitiesLayer) {
-			entity.render(screen, xOffs, yOffs);
+			entity.render(screen);
 		}
 	}
 

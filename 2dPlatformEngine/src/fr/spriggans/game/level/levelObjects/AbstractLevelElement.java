@@ -13,11 +13,10 @@ public abstract class AbstractLevelElement {
 		this.y = y;
 	}
 
-	// TODO bitmap
+	// TODO : RM-ME
 	protected int color;
 
-	public void render(Screen screen, int xOffs, int yOffs) {
-		screen.renderSquare(x, y, 20, color);
+	public void render(Screen screen) {
 	}
 
 	public void tick() {
