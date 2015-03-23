@@ -25,7 +25,7 @@ public class Player extends AbstractLevelElement {
 
 	@Override
 	public void tick() {
-		final int speed = 3;
+		final int speed = 6;
 		if (inputs.left.isPressed()) {
 			x -= speed;
 			isFacingLeft = true;
