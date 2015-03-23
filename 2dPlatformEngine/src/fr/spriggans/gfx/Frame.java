@@ -1,8 +1,8 @@
 package fr.spriggans.gfx;
 
 /**
- * Une frame est un objet contenant une image et une durée d'affichage. La durée
- * est définie sur les ticks, pas les renders. Il y a 60 ticks/s peut importe
+ * Une frame est un objet contenant une image et une duree d'affichage. La duree
+ * est definie sur les ticks, pas les renders. Il y a 60 ticks/s peut importe
  * les fps.
  */
 public class Frame {

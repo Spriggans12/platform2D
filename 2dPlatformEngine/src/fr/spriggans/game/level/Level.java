@@ -18,7 +18,7 @@ public class Level {
 	// TODO : Changer les types des objets dans les listes ?
 	// TODO : Ajouter la couche player ?
 	/**
-	 * Liste contenant les entités mobiles ayant une IA.
+	 * Liste contenant les entites mobiles ayant une IA.
 	 */
 	private final List<AbstractLevelElement> livingEntitiesLayer = new ArrayList<AbstractLevelElement>();
 
@@ -68,7 +68,7 @@ public class Level {
 		int yOffs = 0;
 
 		// Calcul des offsets en fonction du player.
-		// TODO : Faire le calcul en fonction d'une caméra ? :D
+		// TODO : Faire le calcul en fonction d'une camera ? :D
 		for (final AbstractLevelElement entity : livingEntitiesLayer) {
 			if (entity instanceof Player) {
 				final Player player = (Player) entity;

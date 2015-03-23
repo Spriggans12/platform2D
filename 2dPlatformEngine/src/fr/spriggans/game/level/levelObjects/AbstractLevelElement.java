@@ -3,9 +3,9 @@ package fr.spriggans.game.level.levelObjects;
 import fr.spriggans.gfx.Screen;
 
 public abstract class AbstractLevelElement {
-	/** Coordonnée coin NW */
+	/** Coordonnee coin NW */
 	protected int x;
-	/** Coordonnée coin NW */
+	/** Coordonnee coin NW */
 	protected int y;
 
 	public AbstractLevelElement(int x, int y) {

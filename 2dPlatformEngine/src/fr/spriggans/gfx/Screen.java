@@ -1,17 +1,15 @@
 package fr.spriggans.gfx;
 
 /**
- * Classe d'affichage à l'écran.
- *
- * @author Spriggans
+ * Classe d'affichage a l'ecran.
  */
 public class Screen {
 	public static final int MIRROR_HORIZONTAL = 1;
 	public static final int MIRROR_VERTICAL = 2;
 
 	/**
-	 * Lorsque le player arrive à cette distance du bord de la map, la view se
-	 * décale. TODO : Comportement à changer lorsque la classe caméra arrivera.
+	 * Lorsque le player arrive a cette distance du bord de la map, la view se
+	 * decale. TODO : Comportement a changer lorsque la classe Camera arrivera.
 	 * TODO : Ajouter un sliderDistance vertical et horinzontal.
 	 */
 	public int screenSlideDistance = 200;
@@ -22,7 +20,7 @@ public class Screen {
 	public int yOffs = 0;
 	private int pixels[];
 
-	// Paramètres pour éviter un bug si affichage en dehors de l'écran.
+	// Parametres pour eviter un bug si affichage en dehors de l'ecran.
 	private int compHeight1 = 0;
 	private int compHeight2 = 0;
 	private int compWidth1 = 0;
@@ -37,7 +35,7 @@ public class Screen {
 	}
 
 	/**
-	 * Méthode à appeler à chaque changement de level !
+	 * Methode a appeler a chaque changement de level !
 	 */
 	public void calibrateScreenToLevel(int lvlWidth, int lvlHeight) {
 		final int yDiff = height - lvlHeight;

@@ -20,9 +20,9 @@ public class SpriteSheet {
 	private final int id;
 	private int width;
 	private int height;
-	/** Fréquence horizontale des sprites. */
+	/** Frequence horizontale des sprites. */
 	private final int spritesWidth;
-	/** Fréquence verticale des sprites. */
+	/** Frequence verticale des sprites. */
 	private final int spritesHeight;
 	/** SpriteSheet. */
 	private BufferedImage sheet;
@@ -38,7 +38,7 @@ public class SpriteSheet {
 	}
 
 	/**
-	 * Méthode de chargement du spriteSheet dans pixels.
+	 * Methode de chargement du spriteSheet dans pixels.
 	 */
 	private void readPixels(String path) {
 		try {
@@ -50,7 +50,7 @@ public class SpriteSheet {
 		}
 	}
 
-	/** Commence à 0. */
+	/** Commence a 0. */
 	public int[] getSpritePixelsFor(int gridXIndex, int gridYIndex) {
 		final int[] res = new int[spritesWidth * spritesHeight];
 		final BufferedImage img = getSheet().getSubimage(

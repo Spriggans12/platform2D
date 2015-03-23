@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * Un Bitmap est utilisé pour charger une image qui n'est pas animée.
+ * Un Bitmap est utilise pour charger une image qui n'est pas animee.
  */
 public class Bitmap {
 	public static final Bitmap[] bitmaps = new Bitmap[128];
@@ -18,9 +18,9 @@ public class Bitmap {
 			"res/bitmaps/bg_test.jpg", 0, 0);
 
 	private int id;
-	/** Si l'objet est en x0, on commence à dessiner le bitmap à x0 - xCenter */
+	/** Si l'objet est en x0, on commence a dessiner le bitmap a x0 - xCenter */
 	private int xCenter;
-	/** Si l'objet est en y0, on commence à dessiner le bitmap à y0 - yCenter */
+	/** Si l'objet est en y0, on commence a dessiner le bitmap a y0 - yCenter */
 	private int yCenter;
 	private int width;
 	private int height;
@@ -37,7 +37,7 @@ public class Bitmap {
 	}
 
 	/**
-	 * Méthode de chargement du bitmap dans pixels.
+	 * Methode de chargement du bitmap dans pixels.
 	 */
 	private void readPixels(String path) {
 		try {
@@ -63,7 +63,7 @@ public class Bitmap {
 	}
 
 	/**
-	 * Render. Bits stockés dans Screen.
+	 * Render. Bits stockes dans Screen.
 	 */
 	public void render(Screen screen, int x, int y, int mirrorBits) {
 		screen.renderPixels(pixels, width, height, x - xCenter, y - yCenter,

@@ -9,10 +9,10 @@ public class Player extends AbstractLevelElement {
 	Inputs inputs;
 
 	// TODO : Remonter d'un niveau.
-	/** L'animation actuelle jouée par le player. */
+	/** L'animation actuelle jouee par le player. */
 	Animation animation;
 
-	// TODO : RM ME : utilié juste pour le test.
+	// TODO : RM ME : utilise juste pour le test.
 	private boolean isFacingLeft = false;
 
 	public Player(int x, int y, Inputs input) {
@@ -25,7 +25,7 @@ public class Player extends AbstractLevelElement {
 
 	@Override
 	public void tick() {
-		final int speed = 18;
+		final int speed = 4;
 		if (inputs.left.isPressed()) {
 			x -= speed;
 			isFacingLeft = true;

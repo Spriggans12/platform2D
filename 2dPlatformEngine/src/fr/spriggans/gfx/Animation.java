@@ -23,39 +23,39 @@ public class Animation {
 
 	public static final Animation TEST_ANIM_IDDLE = new Animation(0,
 			new Frame[] {
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 12, 0, 10),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 14, 0, 10),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 15, 0, 10),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 16, 0, 10),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 17, 0, 10),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 18, 0, 10),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 19, 0, 10),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 20, 0, 10),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 21, 0, 10),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 22, 0, 10),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 23, 0, 10) },
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 12, 0, 10),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 14, 0, 10),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 15, 0, 10),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 16, 0, 10),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 17, 0, 10),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 18, 0, 10),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 19, 0, 10),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 20, 0, 10),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 21, 0, 10),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 22, 0, 10),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 23, 0, 10) },
 			true);
 	static final int S = 5;
 	public static final Animation TEST_ANIM_WALK = new Animation(1,
 			new Frame[] { new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 0, 0, S),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 1, 0, S),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 2, 0, S),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 3, 0, S),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 4, 0, S),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 5, 0, S),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 6, 0, S),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 7, 0, S),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 8, 0, S),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 9, 0, S),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 10, 0, S),
-			new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 11, 0, S) },
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 1, 0, S),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 2, 0, S),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 3, 0, S),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 4, 0, S),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 5, 0, S),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 6, 0, S),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 7, 0, S),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 8, 0, S),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 9, 0, S),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 10, 0, S),
+					new Frame(SpriteSheet.METALSLUG_TEST_SHEET, 11, 0, S) },
 			true);
 
 	private final int id;
 	private List<Frame> frames = new ArrayList<Frame>();
 	private int idCurrentFrame;
 	/**
-	 * Compte le nombre de ticks que la frame a déjà passé. Atteint
+	 * Compte le nombre de ticks que la frame a deja passe. Atteint
 	 * frame.duration - 1, on change de frame.
 	 */
 	private int currentFrameCount;
@@ -82,7 +82,7 @@ public class Animation {
 			currentFrameCount = 0;
 			// Chargement de la prochaine frame.
 			if (idCurrentFrame++ == frames.size() - 1) {
-				// On a fini la dernière frame de l'animation.
+				// On a fini la derniere frame de l'animation.
 				idCurrentFrame = 0;
 				return true;
 			}
