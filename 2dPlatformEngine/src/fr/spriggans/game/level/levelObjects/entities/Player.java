@@ -25,7 +25,7 @@ public class Player extends AbstractLevelElement {
 
 	@Override
 	public void tick() {
-		final int speed = 6;
+		final int speed = 3;
 		if (inputs.left.isPressed()) {
 			x -= speed;
 			isFacingLeft = true;
@@ -78,7 +78,7 @@ public class Player extends AbstractLevelElement {
 
 	@Override
 	public void render(Screen screen) {
-		animation.render(screen, x, y, isFacingLeft ? Screen.MIRROR_HORIZONTAL
+		animation.render(screen, x, y, !isFacingLeft ? Screen.MIRROR_HORIZONTAL
 				: 0);
 	}
 }

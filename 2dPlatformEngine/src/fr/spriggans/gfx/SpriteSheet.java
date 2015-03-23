@@ -14,6 +14,8 @@ public class SpriteSheet {
 	public static final SpriteSheet[] spriteSheets = new SpriteSheet[128];
 	public static final SpriteSheet TEST_SHEET = new SpriteSheet(0,
 			"res/sheets/test_sheet.png", 48, 96);
+	public static final SpriteSheet METALSLUG_TEST_SHEET = new SpriteSheet(1,
+			"res/sheets/metalSlug.png", 33, 40);
 
 	private final int id;
 	private int width;
