@@ -6,7 +6,7 @@ import fr.spriggans.gfx.Screen;
 public abstract class AbstractLandscape extends AbstractLevelElement {
 	protected boolean collidable;
 
-	// TODO RM ME
+	// TODO => MOVE ME TO COLLIDABLE ONLY.
 	protected int wi;
 	protected int he;
 

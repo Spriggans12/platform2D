@@ -1,23 +1,29 @@
 package fr.spriggans.game.level.levelObjects.entities;
 
+import java.awt.Point;
+
 import fr.spriggans.game.Inputs;
-import fr.spriggans.game.level.levelObjects.AbstractLevelElement;
+import fr.spriggans.game.level.Level;
 import fr.spriggans.gfx.Animation;
 import fr.spriggans.gfx.Screen;
 
-public class Player extends AbstractLevelElement {
+public class Player extends AbstractEntity {
 	Inputs inputs;
 
-	// TODO : Remonter d'un niveau.
-	/** L'animation actuelle jouee par le player. */
-	Animation animation;
-
-	// TODO : RM ME : utilise juste pour le test.
+	// TODO : RM ME : utilisé juste pour le test.
 	private boolean isFacingLeft = false;
 
-	public Player(int x, int y, Inputs input) {
-		super(x, y);
+	// TODO : TMP for test...
+	private static final int PL_W = 20;
+	private static final int PL_H = 40;
 
+	public Player(int x, int y, Level level, Inputs input) {
+		super(x, y, level, PL_W, PL_H);
+
+		collisionsPoints = new Point[] { new Point(5, 0), new Point(15, 0), new Point(5, 40), new Point(15, 40), new Point(0, 10), new Point(
+				0, 30), new Point(20, 10), new Point(20, 30), };
+
+		// TODO : Change it
 		animation = Animation.TEST_ANIM_IDDLE;
 
 		this.inputs = input;
@@ -25,9 +31,11 @@ public class Player extends AbstractLevelElement {
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		final int speed = 4;
 		if (inputs.left.isPressed()) {
-			x -= speed;
+			x = (x - speed);
 			isFacingLeft = true;
 			if (animation.equals(Animation.TEST_ANIM_IDDLE)) {
 				animation.raz();
@@ -35,7 +43,7 @@ public class Player extends AbstractLevelElement {
 			}
 		}
 		if (inputs.right.isPressed()) {
-			x += speed;
+			x = (x + speed);
 			isFacingLeft = false;
 			if (animation.equals(Animation.TEST_ANIM_IDDLE)) {
 				animation.raz();
@@ -43,9 +51,9 @@ public class Player extends AbstractLevelElement {
 			}
 		}
 		if (inputs.down.isPressed())
-			y += speed;
+			y = (y + speed);
 		if (inputs.up.isPressed())
-			y -= speed;
+			y = (y - speed);
 
 		if (!inputs.left.isPressed() && !inputs.right.isPressed()) {
 			if (animation.equals(Animation.TEST_ANIM_WALK)) {
@@ -78,7 +86,6 @@ public class Player extends AbstractLevelElement {
 
 	@Override
 	public void render(Screen screen) {
-		animation.render(screen, x, y, !isFacingLeft ? Screen.MIRROR_HORIZONTAL
-				: 0);
+		animation.render(screen, x, y, !isFacingLeft ? Screen.MIRROR_HORIZONTAL : 0);
 	}
 }

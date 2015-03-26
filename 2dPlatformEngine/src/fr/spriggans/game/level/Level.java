@@ -7,15 +7,16 @@ import fr.spriggans.game.Inputs;
 import fr.spriggans.game.level.levelObjects.AbstractLevelElement;
 import fr.spriggans.game.level.levelObjects.background.Background;
 import fr.spriggans.game.level.levelObjects.entities.Player;
+import fr.spriggans.game.level.levelObjects.landscape.LandscapeCollidable;
 import fr.spriggans.game.level.levelObjects.landscape.LandscapeNotCollidable;
 import fr.spriggans.gfx.Screen;
 
 public class Level {
+	/** Vrai si le level est fini. */
 	private boolean over;
 	private int width;
 	private int height;
 
-	// TODO : Changer les types des objets dans les listes ?
 	// TODO : Ajouter la couche player ?
 	/**
 	 * Liste contenant les entites mobiles ayant une IA.
@@ -28,37 +29,44 @@ public class Level {
 	private final List<AbstractLevelElement> interactiveLayer = new ArrayList<AbstractLevelElement>();
 
 	/**
-	 * Liste contenant les tiles (sols, murs) collidables ou non du level.
+	 * Liste contenant les tiles (sols, murs) collidables du level.
 	 */
-	private final List<AbstractLevelElement> landscapeLayer = new ArrayList<AbstractLevelElement>();
+	private final List<LandscapeCollidable> collisionLayer = new ArrayList<LandscapeCollidable>();
+
+	/**
+	 * Liste contenant les tiles non collidables du level. Utilisées pour
+	 * décoration.
+	 */
+	private final List<LandscapeNotCollidable> decorativeLayer = new ArrayList<LandscapeNotCollidable>();
 
 	/**
 	 * Liste contenant les backgrounds du level.
 	 */
-	private final List<AbstractLevelElement> backgroundLayer = new ArrayList<AbstractLevelElement>();
+	private final List<Background> backgroundLayer = new ArrayList<Background>();
 
 	public Level(Inputs inputs) {
 		// TODO LOAD THIS DIFFERENTLY.
 		this.width = 2000;
 		this.height = 1100;
 
-		livingEntitiesLayer.add(new Player(200, 200, inputs));
+		getLivingEntitiesLayer().add(new Player(200, 200, this, inputs));
 
 		backgroundLayer.add(new Background(0, 0));
 
-		// TODO UN-TEST
+		collisionLayer.add(new LandscapeCollidable(100, height - 150, 200, 30));
+
 		final int s = 30;
-		landscapeLayer.add(new LandscapeNotCollidable(0, 0, width, s));
-		landscapeLayer.add(new LandscapeNotCollidable(0, height - s, width, s));
-		landscapeLayer.add(new LandscapeNotCollidable(0, 0, s, height));
-		landscapeLayer.add(new LandscapeNotCollidable(width - s, 0, s, height));
+		collisionLayer.add(new LandscapeCollidable(0, 0, width, s));
+		collisionLayer.add(new LandscapeCollidable(0, height - s, width, s));
+		collisionLayer.add(new LandscapeCollidable(0, 0, s, height));
+		collisionLayer.add(new LandscapeCollidable(width - s, 0, s, height));
 	}
 
 	public void tick() {
-		for (final AbstractLevelElement entity : livingEntitiesLayer) {
+		for (final AbstractLevelElement entity : getLivingEntitiesLayer()) {
 			entity.tick();
 		}
-		for (final AbstractLevelElement interactive : interactiveLayer) {
+		for (final AbstractLevelElement interactive : getInteractiveLayer()) {
 			interactive.tick();
 		}
 	}
@@ -69,7 +77,7 @@ public class Level {
 
 		// Calcul des offsets en fonction du player.
 		// TODO : Faire le calcul en fonction d'une camera ? :D
-		for (final AbstractLevelElement entity : livingEntitiesLayer) {
+		for (final AbstractLevelElement entity : getLivingEntitiesLayer()) {
 			if (entity instanceof Player) {
 				final Player player = (Player) entity;
 				xOffs = player.getXOffset(screen, width);
@@ -92,16 +100,19 @@ public class Level {
 		screen.setOffsets(xOffs, yOffs);
 		screen.blackOut();
 
-		for (final AbstractLevelElement bg : backgroundLayer) {
+		for (final Background bg : backgroundLayer) {
 			bg.render(screen);
 		}
-		for (final AbstractLevelElement land : landscapeLayer) {
-			land.render(screen);
+		for (final LandscapeNotCollidable deco : decorativeLayer) {
+			deco.render(screen);
 		}
-		for (final AbstractLevelElement interactive : interactiveLayer) {
+		for (final LandscapeCollidable collidable : getCollisionLayer()) {
+			collidable.render(screen);
+		}
+		for (final AbstractLevelElement interactive : getInteractiveLayer()) {
 			interactive.render(screen);
 		}
-		for (final AbstractLevelElement entity : livingEntitiesLayer) {
+		for (final AbstractLevelElement entity : getLivingEntitiesLayer()) {
 			entity.render(screen);
 		}
 	}
@@ -128,5 +139,17 @@ public class Level {
 
 	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	public List<AbstractLevelElement> getLivingEntitiesLayer() {
+		return livingEntitiesLayer;
+	}
+
+	public List<AbstractLevelElement> getInteractiveLayer() {
+		return interactiveLayer;
+	}
+
+	public List<LandscapeCollidable> getCollisionLayer() {
+		return collisionLayer;
 	}
 }
