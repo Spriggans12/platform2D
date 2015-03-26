@@ -19,6 +19,6 @@ public abstract class AbstractLandscape extends AbstractLevelElement {
 
 	@Override
 	public void render(Screen screen) {
-		screen.renderRectangle(x, y, wi, he, color);
+		screen.renderRectangle((int) x, (int) y, wi, he, color);
 	}
 }

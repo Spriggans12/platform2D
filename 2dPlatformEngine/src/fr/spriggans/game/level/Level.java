@@ -18,30 +18,19 @@ public class Level {
 	private int height;
 
 	// TODO : Ajouter la couche player ?
-	/**
-	 * Liste contenant les entites mobiles ayant une IA.
-	 */
+	/** Liste contenant les entites mobiles ayant une IA. */
 	private final List<AbstractLevelElement> livingEntitiesLayer = new ArrayList<AbstractLevelElement>();
 
-	/**
-	 * Liste contenant les objets interactifs (items, projectiles, boutons...).
-	 */
+	/** Liste contenant les objets interactifs (items, projectiles, boutons...). */
 	private final List<AbstractLevelElement> interactiveLayer = new ArrayList<AbstractLevelElement>();
 
-	/**
-	 * Liste contenant les tiles (sols, murs) collidables du level.
-	 */
+	/** Liste contenant les tiles (sols, murs) collidables du level. */
 	private final List<LandscapeCollidable> collisionLayer = new ArrayList<LandscapeCollidable>();
 
-	/**
-	 * Liste contenant les tiles non collidables du level. Utilisées pour
-	 * décoration.
-	 */
+	/** Liste contenant les tiles non collidables du level. Utilisées pour décoration. */
 	private final List<LandscapeNotCollidable> decorativeLayer = new ArrayList<LandscapeNotCollidable>();
 
-	/**
-	 * Liste contenant les backgrounds du level.
-	 */
+	/** Liste contenant les backgrounds du level. */
 	private final List<Background> backgroundLayer = new ArrayList<Background>();
 
 	public Level(Inputs inputs) {
@@ -53,7 +42,16 @@ public class Level {
 
 		backgroundLayer.add(new Background(0, 0));
 
-		collisionLayer.add(new LandscapeCollidable(100, height - 150, 200, 30));
+		collisionLayer.add(new LandscapeCollidable(130, height - 150, 200, 30));
+		collisionLayer.add(new LandscapeCollidable(30, height - 80, 30, 30));
+		collisionLayer.add(new LandscapeCollidable(80, height - 120, 30, 30));
+		collisionLayer.add(new LandscapeCollidable(350, height - 350, 30, 280));
+		collisionLayer.add(new LandscapeCollidable(450, height - 90, 40, 3));
+		collisionLayer.add(new LandscapeCollidable(350, height - 100, 100, 30));
+
+		// Escalier
+		for (int i = 0; i < 20; i++)
+			collisionLayer.add(new LandscapeCollidable(450 + i * 30, height - 30 - i, 50, 30));
 
 		final int s = 30;
 		collisionLayer.add(new LandscapeCollidable(0, 0, width, s));

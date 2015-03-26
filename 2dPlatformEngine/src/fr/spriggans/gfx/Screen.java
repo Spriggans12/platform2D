@@ -1,17 +1,12 @@
 package fr.spriggans.gfx;
 
-/**
- * Classe d'affichage a l'ecran.
- */
+/** Classe d'affichage a l'ecran. */
 public class Screen {
 	public static final int MIRROR_HORIZONTAL = 1;
 	public static final int MIRROR_VERTICAL = 2;
 
-	/**
-	 * Lorsque le player arrive a cette distance du bord de la map, la view se
-	 * decale. TODO : Comportement a changer lorsque la classe Camera arrivera.
-	 * TODO : Ajouter un sliderDistance vertical et horinzontal.
-	 */
+	/** Lorsque le player arrive a cette distance du bord de la map, la view se decale. TODO : Comportement a changer lorsque la classe Camera arrivera. TODO : Ajouter un sliderDistance vertical et
+	 * horinzontal. */
 	public int screenSlideDistance = 200;
 
 	private int width;
@@ -34,9 +29,7 @@ public class Screen {
 		screenSlideDistance = (Math.min(w, h)) / 2;
 	}
 
-	/**
-	 * Methode a appeler a chaque changement de level !
-	 */
+	/** Methode a appeler a chaque changement de level ! */
 	public void calibrateScreenToLevel(int lvlWidth, int lvlHeight) {
 		final int yDiff = height - lvlHeight;
 		final int xDiff = width - lvlWidth;
@@ -46,10 +39,12 @@ public class Screen {
 		compWidth2 = xDiff > 0 ? lvlWidth + 1 + xDiff / 2 : width;
 	}
 
-	/**
-	 * x,y coin NW.
-	 */
+	/** x,y coin NW. */
 	public void renderRectangle(int x, int y, int w, int h, int col) {
+		renderRectangle(x, y, w, h, col, false, 0);
+	}
+
+	public void renderRectangle(int x, int y, int w, int h, int col, boolean outlineOnly, int outlineSize) {
 		x -= xOffs;
 		y -= yOffs;
 		for (int j = 0; j < h; j++) {
@@ -57,6 +52,9 @@ public class Screen {
 			if (jPixel < compHeight1 || jPixel >= compHeight2)
 				continue;
 			for (int i = 0; i < w; i++) {
+				if (outlineOnly && j > outlineSize - 1 && j < h - outlineSize && i > outlineSize - 1 && i < w - outlineSize) {
+					continue;
+				}
 				final int iPixel = i + x;
 				if (iPixel < compWidth1 || iPixel >= compWidth2)
 					continue;
@@ -81,11 +79,8 @@ public class Screen {
 		pixels[yPxl * width + xPxl] = p;
 	}
 
-	/**
-	 * x,y coin NW.
-	 */
-	public void renderPixels(int[] pxls, int w, int h, int x, int y,
-			int mirrorBits) {
+	/** x,y coin NW. */
+	public void renderPixels(int[] pxls, int w, int h, int x, int y, int mirrorBits) {
 		if (isOutsideScreen(x - xOffs, y - yOffs, w, h))
 			return;
 		if ((mirrorBits & MIRROR_HORIZONTAL) == MIRROR_HORIZONTAL) {
@@ -110,8 +105,7 @@ public class Screen {
 	}
 
 	public boolean isOutsideScreen(int x, int y, int w, int h) {
-		return x + w < compWidth1 || x >= compWidth2 || y + h < compHeight1
-				|| y >= compHeight2;
+		return x + w < compWidth1 || x >= compWidth2 || y + h < compHeight1 || y >= compHeight2;
 	}
 
 	public void blackOut() {

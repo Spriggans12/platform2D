@@ -1,5 +1,7 @@
 package fr.spriggans.game.physics;
 
+import fr.spriggans.gfx.Screen;
+
 public class BoundingBox {
 	private int x0;
 	private int y0;
@@ -20,6 +22,10 @@ public class BoundingBox {
 	/** Renvoie vrai si la BB contient le point donné. Touché = contenu. */
 	public boolean containsPoint(int xPoint, int yPoint) {
 		return x0 <= xPoint && xPoint <= x1 && y0 <= yPoint && yPoint <= y1;
+	}
+
+	public void render(Screen screen) {
+		screen.renderRectangle(x0, y0, w, h, 0xFFFF0000, true, 2);
 	}
 
 	public int getW() {

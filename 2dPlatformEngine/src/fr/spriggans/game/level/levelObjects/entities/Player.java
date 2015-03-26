@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import fr.spriggans.game.Inputs;
 import fr.spriggans.game.level.Level;
+import fr.spriggans.game.level.levelObjects.landscape.LandscapeCollidable;
 import fr.spriggans.gfx.Animation;
 import fr.spriggans.gfx.Screen;
 
@@ -23,6 +24,16 @@ public class Player extends AbstractEntity {
 		collisionsPoints = new Point[] { new Point(5, 0), new Point(15, 0), new Point(5, 40), new Point(15, 40), new Point(0, 10), new Point(
 				0, 30), new Point(20, 10), new Point(20, 30), };
 
+		// TODO : les placer dans le constructeur d'entités.
+
+		final int S = 1;
+
+		this.groundFriction = 0.3f * S;
+		this.groundAcceleration = 0.2f * S;
+		this.gravityStrength = 0.5f * S;
+		this.groundJumpSpeed = 10 * S;
+		this.maxSpeedX = 5 * S;
+		this.maxSpeedY = 10 * S;
 		// TODO : Change it
 		animation = Animation.TEST_ANIM_IDDLE;
 
@@ -30,47 +41,86 @@ public class Player extends AbstractEntity {
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
+	protected boolean applyInputs() {
+		boolean horizontalMovement = false;
 
-		final int speed = 4;
 		if (inputs.left.isPressed()) {
-			x = (x - speed);
+			speedX -= groundAcceleration;
 			isFacingLeft = true;
+			horizontalMovement = true;
 			if (animation.equals(Animation.TEST_ANIM_IDDLE)) {
 				animation.raz();
 				animation = Animation.TEST_ANIM_WALK;
 			}
 		}
 		if (inputs.right.isPressed()) {
-			x = (x + speed);
+			speedX += groundAcceleration;
 			isFacingLeft = false;
+			horizontalMovement = true;
 			if (animation.equals(Animation.TEST_ANIM_IDDLE)) {
 				animation.raz();
 				animation = Animation.TEST_ANIM_WALK;
 			}
 		}
-		if (inputs.down.isPressed())
-			y = (y + speed);
-		if (inputs.up.isPressed())
-			y = (y - speed);
 
+		if (inputs.up.isPressed() && !jumping) {
+			jumping = true;
+			speedY -= groundJumpSpeed;
+		}
+
+		// Fin de l'annimaition de marche.
 		if (!inputs.left.isPressed() && !inputs.right.isPressed()) {
 			if (animation.equals(Animation.TEST_ANIM_WALK)) {
 				animation.raz();
 				animation = Animation.TEST_ANIM_IDDLE;
 			}
 		}
-		animation.tick();
+
+		return horizontalMovement;
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		// final int speed = 4;
+		// if (inputs.left.isPressed()) {
+		// x = (x - speed);
+		// isFacingLeft = true;
+		// if (animation.equals(Animation.TEST_ANIM_IDDLE)) {
+		// animation.raz();
+		// animation = Animation.TEST_ANIM_WALK;
+		// }
+		// }
+		// if (inputs.right.isPressed()) {
+		// x = (x + speed);
+		// isFacingLeft = false;
+		// if (animation.equals(Animation.TEST_ANIM_IDDLE)) {
+		// animation.raz();
+		// animation = Animation.TEST_ANIM_WALK;
+		// }
+		// }
+		// if (inputs.down.isPressed())
+		// y = (y + speed);
+		// if (inputs.up.isPressed())
+		// y = (y - speed);
+		//
+		// if (!inputs.left.isPressed() && !inputs.right.isPressed()) {
+		// if (animation.equals(Animation.TEST_ANIM_WALK)) {
+		// animation.raz();
+		// animation = Animation.TEST_ANIM_IDDLE;
+		// }
+		// }
+		// animation.tick();
 	}
 
 	public int getXOffset(Screen screen, int lvlWidth) {
 		if (lvlWidth < screen.getWidth())
 			return (lvlWidth - screen.getWidth()) / 2;
 		if (x <= screen.xOffs + screen.screenSlideDistance)
-			return x - screen.screenSlideDistance;
+			return (int) (x - screen.screenSlideDistance);
 		if (x >= screen.xOffs + screen.getWidth() - screen.screenSlideDistance)
-			return x - screen.getWidth() + screen.screenSlideDistance;
+			return (int) (x - screen.getWidth() + screen.screenSlideDistance);
 		return screen.xOffs;
 	}
 
@@ -78,14 +128,21 @@ public class Player extends AbstractEntity {
 		if (lvlHeight < screen.getHeight())
 			return (lvlHeight - screen.getHeight()) / 2;
 		if (y <= screen.yOffs + screen.screenSlideDistance)
-			return y - screen.screenSlideDistance;
+			return (int) (y - screen.screenSlideDistance);
 		if (y >= screen.yOffs + screen.getHeight() - screen.screenSlideDistance)
-			return y - screen.getHeight() + screen.screenSlideDistance;
+			return (int) (y - screen.getHeight() + screen.screenSlideDistance);
 		return screen.yOffs;
 	}
 
 	@Override
 	public void render(Screen screen) {
-		animation.render(screen, x, y, !isFacingLeft ? Screen.MIRROR_HORIZONTAL : 0);
+		// TODO : debug only : affichage des BB des voisins.
+		for (final LandscapeCollidable collidable : collidablesInVicinity) {
+			collidable.getBoundingBox().render(screen);
+		}
+		animation.render(screen, (int) x, (int) y, !isFacingLeft ? Screen.MIRROR_HORIZONTAL : 0);
+
+		for (final Point p : collisionsPoints)
+			screen.renderPixel(0xFFFF0000, (int) x + p.x, (int) y + p.y);
 	}
 }
