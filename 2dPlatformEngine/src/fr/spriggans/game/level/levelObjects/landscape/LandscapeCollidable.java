@@ -1,34 +1,26 @@
 package fr.spriggans.game.level.levelObjects.landscape;
 
-import fr.spriggans.game.physics.BoundingBox;
+import java.awt.Rectangle;
+
+import fr.spriggans.gfx.Screen;
 
 public class LandscapeCollidable extends AbstractLandscape {
 
 	/** BoundingBox de l'objet collidable. Englobe totalement l'objet. */
-	private final BoundingBox boundingBox;
+	private final Rectangle boundingBox;
 
 	public LandscapeCollidable(int x, int y, int w, int h) {
 		super(x, y, true, w, h);
 		color = 0xFF00FF00;
-		boundingBox = new BoundingBox(x, y, x + w, y + h);
+		boundingBox = new Rectangle(x, y, w, h);
 	}
-	// public int getX() {
-	// return x;
-	// }
-	//
-	// public int getY() {
-	// return y;
-	// }
-	//
-	// public int getWidth() {
-	// return wi;
-	// }
-	//
-	// public int getHeight() {
-	// return he;
-	// }
 
-	public BoundingBox getBoundingBox() {
+	public void renderBoundingBox(Screen screen) {
+		screen.renderRectangle(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height, 0xFFFF0000, true, 2);
+	}
+
+	public Rectangle getBoundingBox() {
 		return boundingBox;
 	}
+
 }

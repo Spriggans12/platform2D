@@ -49,9 +49,15 @@ public class Level {
 		collisionLayer.add(new LandscapeCollidable(450, height - 90, 40, 3));
 		collisionLayer.add(new LandscapeCollidable(350, height - 100, 100, 30));
 
-		// Escalier
+		collisionLayer.add(new LandscapeCollidable(250, height - 240, 100, 30));
+		collisionLayer.add(new LandscapeCollidable(50, height - 240, 100, 30));
+
+		// Escaliers
 		for (int i = 0; i < 20; i++)
 			collisionLayer.add(new LandscapeCollidable(450 + i * 30, height - 30 - i, 50, 30));
+
+		for (int i = 0; i < 20; i++)
+			collisionLayer.add(new LandscapeCollidable(width - 150 - i * 30, i, 50, 30));
 
 		final int s = 30;
 		collisionLayer.add(new LandscapeCollidable(0, 0, width, s));

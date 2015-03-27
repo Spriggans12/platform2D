@@ -1,6 +1,7 @@
 package fr.spriggans.game.level.levelObjects.entities;
 
 import java.awt.Point;
+import java.awt.geom.GeneralPath;
 
 import fr.spriggans.game.Inputs;
 import fr.spriggans.game.level.Level;
@@ -23,6 +24,13 @@ public class Player extends AbstractEntity {
 
 		collisionsPoints = new Point[] { new Point(5, 0), new Point(15, 0), new Point(5, 40), new Point(15, 40), new Point(0, 10), new Point(
 				0, 30), new Point(20, 10), new Point(20, 30), };
+		xPointsShape = new int[] { 5, 15, 20, 20, 15, 5, 0, 0 };
+		yPointsShape = new int[] { 0, 0, 10, 30, 40, 40, 30, 10 };
+		entityGeometry = new GeneralPath(GeneralPath.WIND_EVEN_ODD, xPointsShape.length);
+		entityGeometry.moveTo(xPointsShape[0], yPointsShape[0]);
+		for (int i = 0; i < xPointsShape.length; i++)
+			entityGeometry.lineTo(xPointsShape[i], yPointsShape[i]);
+		entityGeometry.closePath();
 
 		// TODO : les placer dans le constructeur d'entités.
 
@@ -31,7 +39,9 @@ public class Player extends AbstractEntity {
 		this.groundFriction = 0.3f * S;
 		this.groundAcceleration = 0.2f * S;
 		this.gravityStrength = 0.5f * S;
+		// this.gravityStrength = 0.05f * S;
 		this.groundJumpSpeed = 10 * S;
+		// this.groundJumpSpeed = 2f * S;
 		this.maxSpeedX = 5 * S;
 		this.maxSpeedY = 10 * S;
 		// TODO : Change it
@@ -79,41 +89,6 @@ public class Player extends AbstractEntity {
 		return horizontalMovement;
 	}
 
-	@Override
-	public void tick() {
-		super.tick();
-
-		// final int speed = 4;
-		// if (inputs.left.isPressed()) {
-		// x = (x - speed);
-		// isFacingLeft = true;
-		// if (animation.equals(Animation.TEST_ANIM_IDDLE)) {
-		// animation.raz();
-		// animation = Animation.TEST_ANIM_WALK;
-		// }
-		// }
-		// if (inputs.right.isPressed()) {
-		// x = (x + speed);
-		// isFacingLeft = false;
-		// if (animation.equals(Animation.TEST_ANIM_IDDLE)) {
-		// animation.raz();
-		// animation = Animation.TEST_ANIM_WALK;
-		// }
-		// }
-		// if (inputs.down.isPressed())
-		// y = (y + speed);
-		// if (inputs.up.isPressed())
-		// y = (y - speed);
-		//
-		// if (!inputs.left.isPressed() && !inputs.right.isPressed()) {
-		// if (animation.equals(Animation.TEST_ANIM_WALK)) {
-		// animation.raz();
-		// animation = Animation.TEST_ANIM_IDDLE;
-		// }
-		// }
-		// animation.tick();
-	}
-
 	public int getXOffset(Screen screen, int lvlWidth) {
 		if (lvlWidth < screen.getWidth())
 			return (lvlWidth - screen.getWidth()) / 2;
@@ -138,7 +113,7 @@ public class Player extends AbstractEntity {
 	public void render(Screen screen) {
 		// TODO : debug only : affichage des BB des voisins.
 		for (final LandscapeCollidable collidable : collidablesInVicinity) {
-			collidable.getBoundingBox().render(screen);
+			collidable.renderBoundingBox(screen);
 		}
 		animation.render(screen, (int) x, (int) y, !isFacingLeft ? Screen.MIRROR_HORIZONTAL : 0);
 
