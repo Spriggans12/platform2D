@@ -1,6 +1,7 @@
 package fr.spriggans.game.level.levelObjects.entities;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
 
 import fr.spriggans.game.Inputs;
@@ -22,8 +23,8 @@ public class Player extends AbstractEntity {
 	public Player(int x, int y, Level level, Inputs input) {
 		super(x, y, level, PL_W, PL_H);
 
-		collisionsPoints = new Point[] { new Point(5, 0), new Point(15, 0), new Point(5, 40), new Point(15, 40), new Point(0, 10), new Point(
-				0, 30), new Point(20, 10), new Point(20, 30), };
+		collisionsPoints = new Point[] { new Point(4, 0), new Point(14, 0), new Point(4, 39), new Point(14, 39), new Point(0, 9), new Point(
+				0, 29), new Point(19, 9), new Point(19, 29), };
 		xPointsShape = new int[] { 5, 15, 20, 20, 15, 5, 0, 0 };
 		yPointsShape = new int[] { 0, 0, 10, 30, 40, 40, 30, 10 };
 		entityGeometry = new GeneralPath(GeneralPath.WIND_EVEN_ODD, xPointsShape.length);
@@ -116,6 +117,9 @@ public class Player extends AbstractEntity {
 			collidable.renderBoundingBox(screen);
 		}
 		animation.render(screen, (int) x, (int) y, !isFacingLeft ? Screen.MIRROR_HORIZONTAL : 0);
+
+		final Rectangle a = entityGeometry.getBounds();
+		screen.renderRectangle((int) x, (int) y, a.width, a.height, 0xFFFFFF00, true, 1);
 
 		for (final Point p : collisionsPoints)
 			screen.renderPixel(0xFFFF0000, (int) x + p.x, (int) y + p.y);
