@@ -7,15 +7,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-/**
- * Classe permettant de charger des sous-images (int[]) depuis une sheet.
- */
+/** Classe permettant de charger des sous-images (int[]) depuis une sheet. */
 public class SpriteSheet {
 	public static final SpriteSheet[] spriteSheets = new SpriteSheet[128];
-	public static final SpriteSheet TEST_SHEET = new SpriteSheet(0,
-			"res/sheets/test_sheet.png", 48, 96);
-	public static final SpriteSheet METALSLUG_TEST_SHEET = new SpriteSheet(1,
-			"res/sheets/metalSlug.png", 33, 40);
+	public static final SpriteSheet TEST_SHEET = new SpriteSheet(0, "res/sheets/test_sheet.png", 48, 96);
+	public static final SpriteSheet METALSLUG_TEST_SHEET = new SpriteSheet(1, "res/sheets/metalSlug.png", 33, 40);
 
 	private final int id;
 	private int width;
@@ -37,9 +33,7 @@ public class SpriteSheet {
 		spriteSheets[id] = this;
 	}
 
-	/**
-	 * Methode de chargement du spriteSheet dans pixels.
-	 */
+	/** Methode de chargement du spriteSheet dans pixels. */
 	private void readPixels(String path) {
 		try {
 			setSheet(ImageIO.read(new File(path)));
@@ -53,11 +47,8 @@ public class SpriteSheet {
 	/** Commence a 0. */
 	public int[] getSpritePixelsFor(int gridXIndex, int gridYIndex) {
 		final int[] res = new int[spritesWidth * spritesHeight];
-		final BufferedImage img = getSheet().getSubimage(
-				gridXIndex * spritesWidth, gridYIndex * spritesHeight,
-				spritesWidth, spritesHeight);
-		final PixelGrabber grabber = new PixelGrabber(img, 0, 0, spritesWidth,
-				spritesHeight, res, 0, spritesWidth);
+		final BufferedImage img = getSheet().getSubimage(gridXIndex * spritesWidth, gridYIndex * spritesHeight, spritesWidth, spritesHeight);
+		final PixelGrabber grabber = new PixelGrabber(img, 0, 0, spritesWidth, spritesHeight, res, 0, spritesWidth);
 		try {
 			grabber.grabPixels();
 		} catch (final InterruptedException e) {

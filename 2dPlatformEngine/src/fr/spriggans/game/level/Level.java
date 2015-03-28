@@ -7,8 +7,9 @@ import fr.spriggans.game.Inputs;
 import fr.spriggans.game.level.levelObjects.AbstractLevelElement;
 import fr.spriggans.game.level.levelObjects.background.Background;
 import fr.spriggans.game.level.levelObjects.entities.Player;
-import fr.spriggans.game.level.levelObjects.landscape.LandscapeCollidable;
-import fr.spriggans.game.level.levelObjects.landscape.LandscapeNotCollidable;
+import fr.spriggans.game.level.levelObjects.landscape.AbstractLandscapeCollidable;
+import fr.spriggans.game.level.levelObjects.landscape.LandscapeCollidableEllipse;
+import fr.spriggans.game.level.levelObjects.landscape.LandscapeCollidableRectangle;
 import fr.spriggans.gfx.Screen;
 
 public class Level {
@@ -25,10 +26,10 @@ public class Level {
 	private final List<AbstractLevelElement> interactiveLayer = new ArrayList<AbstractLevelElement>();
 
 	/** Liste contenant les tiles (sols, murs) collidables du level. */
-	private final List<LandscapeCollidable> collisionLayer = new ArrayList<LandscapeCollidable>();
+	private final List<AbstractLandscapeCollidable> collisionLayer = new ArrayList<AbstractLandscapeCollidable>();
 
 	/** Liste contenant les tiles non collidables du level. Utilisées pour décoration. */
-	private final List<LandscapeNotCollidable> decorativeLayer = new ArrayList<LandscapeNotCollidable>();
+	// private final List<LandscapeNotCollidable> decorativeLayer = new ArrayList<LandscapeNotCollidable>();
 
 	/** Liste contenant les backgrounds du level. */
 	private final List<Background> backgroundLayer = new ArrayList<Background>();
@@ -42,28 +43,34 @@ public class Level {
 
 		backgroundLayer.add(new Background(0, 0));
 
-		collisionLayer.add(new LandscapeCollidable(130, height - 150, 200, 30));
-		collisionLayer.add(new LandscapeCollidable(30, height - 80, 30, 30));
-		collisionLayer.add(new LandscapeCollidable(80, height - 120, 30, 30));
-		collisionLayer.add(new LandscapeCollidable(350, height - 350, 30, 280));
-		collisionLayer.add(new LandscapeCollidable(450, height - 90, 40, 3));
-		collisionLayer.add(new LandscapeCollidable(350, height - 100, 100, 30));
+		collisionLayer.add(new LandscapeCollidableRectangle(130, height - 150, 200, 30));
+		collisionLayer.add(new LandscapeCollidableRectangle(30, height - 70, 30, 30));
+		collisionLayer.add(new LandscapeCollidableRectangle(80, height - 120, 30, 30));
+		collisionLayer.add(new LandscapeCollidableRectangle(350, height - 320, 30, 250));
+		collisionLayer.add(new LandscapeCollidableRectangle(450, height - 90, 40, 3));
+		collisionLayer.add(new LandscapeCollidableRectangle(350, height - 100, 100, 30));
 
-		collisionLayer.add(new LandscapeCollidable(250, height - 240, 100, 30));
-		collisionLayer.add(new LandscapeCollidable(50, height - 240, 100, 30));
+		collisionLayer.add(new LandscapeCollidableRectangle(250, height - 240, 100, 30));
+		collisionLayer.add(new LandscapeCollidableRectangle(50, height - 240, 100, 30));
+
+		collisionLayer.add(new LandscapeCollidableEllipse(120, height - 520, 900, 300));
 
 		// Escaliers
 		for (int i = 0; i < 20; i++)
-			collisionLayer.add(new LandscapeCollidable(450 + i * 30, height - 30 - i, 50, 30));
+			collisionLayer.add(new LandscapeCollidableRectangle(450 + i * 30, height - 30 - i * 10, 50, 30));
+		for (int i = 0; i < 20; i++)
+			collisionLayer.add(new LandscapeCollidableRectangle(350 + i * 30, height - 320 - 3 * i, 50, 30));
+		for (int i = 0; i < 20; i++)
+			collisionLayer.add(new LandscapeCollidableRectangle(350 + 20 * 30 + i * 30, height - 320 - 3 * 20 + 3 * i, 50, 30));
 
 		for (int i = 0; i < 20; i++)
-			collisionLayer.add(new LandscapeCollidable(width - 150 - i * 30, i, 50, 30));
+			collisionLayer.add(new LandscapeCollidableRectangle(width - 150 - i * 30, i, 50, 30));
 
 		final int s = 30;
-		collisionLayer.add(new LandscapeCollidable(0, 0, width, s));
-		collisionLayer.add(new LandscapeCollidable(0, height - s, width, s));
-		collisionLayer.add(new LandscapeCollidable(0, 0, s, height));
-		collisionLayer.add(new LandscapeCollidable(width - s, 0, s, height));
+		collisionLayer.add(new LandscapeCollidableRectangle(0, 0, width, s));
+		collisionLayer.add(new LandscapeCollidableRectangle(0, height - s, width, s));
+		collisionLayer.add(new LandscapeCollidableRectangle(0, 0, s, height));
+		collisionLayer.add(new LandscapeCollidableRectangle(width - s, 0, s, height));
 	}
 
 	public void tick() {
@@ -107,10 +114,10 @@ public class Level {
 		for (final Background bg : backgroundLayer) {
 			bg.render(screen);
 		}
-		for (final LandscapeNotCollidable deco : decorativeLayer) {
-			deco.render(screen);
-		}
-		for (final LandscapeCollidable collidable : getCollisionLayer()) {
+		// for (final LandscapeNotCollidable deco : decorativeLayer) {
+		// deco.render(screen);
+		// }
+		for (final AbstractLandscapeCollidable collidable : getCollisionLayer()) {
 			collidable.render(screen);
 		}
 		for (final AbstractLevelElement interactive : getInteractiveLayer()) {
@@ -153,7 +160,7 @@ public class Level {
 		return interactiveLayer;
 	}
 
-	public List<LandscapeCollidable> getCollisionLayer() {
+	public List<AbstractLandscapeCollidable> getCollisionLayer() {
 		return collisionLayer;
 	}
 }

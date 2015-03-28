@@ -14,7 +14,7 @@ import fr.spriggans.gfx.Screen;
 
 public class MainComponent extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
-	private static boolean DEBUG = true;
+
 	private boolean running = false;
 	private Screen screen;
 	private BufferedImage img;
@@ -22,8 +22,9 @@ public class MainComponent extends Canvas implements Runnable {
 	private Thread thread;
 	private JFrame frame;
 	private Inputs inputs;
-
 	private Game game;
+
+	private final boolean fullScreen = false;
 
 	public void init(final int w, final int h) {
 		setPreferredSize(new Dimension(w, h));
@@ -31,11 +32,16 @@ public class MainComponent extends Canvas implements Runnable {
 		setMaximumSize(new Dimension(w, h));
 		frame = new JFrame("2D Platform Engine");
 		frame.setLayout(new BorderLayout());
+		if (fullScreen) {
+			frame.setUndecorated(true);
+			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		}
 		frame.add(this);
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setVisible(true);
+
 		screen = new Screen(w, h);
 		inputs = new Inputs(this);
 		game = new Game(inputs, screen);
@@ -75,7 +81,7 @@ public class MainComponent extends Canvas implements Runnable {
 				delta -= secondsPerTick;
 				ticked = true;
 				if (ticks % FPS == 0) {
-					if (DEBUG)
+					if (Launcher.DEBUG)
 						System.out.println("fps : " + fps);
 					lastTime += 1000;
 					fps = 0;

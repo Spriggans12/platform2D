@@ -6,7 +6,7 @@ import java.awt.geom.GeneralPath;
 
 import fr.spriggans.game.Inputs;
 import fr.spriggans.game.level.Level;
-import fr.spriggans.game.level.levelObjects.landscape.LandscapeCollidable;
+import fr.spriggans.game.level.levelObjects.landscape.AbstractLandscapeCollidable;
 import fr.spriggans.gfx.Animation;
 import fr.spriggans.gfx.Screen;
 
@@ -113,14 +113,14 @@ public class Player extends AbstractEntity {
 	@Override
 	public void render(Screen screen) {
 		// TODO : debug only : affichage des BB des voisins.
-		for (final LandscapeCollidable collidable : collidablesInVicinity) {
+		for (final AbstractLandscapeCollidable collidable : collidablesInVicinity) {
 			collidable.renderBoundingBox(screen);
 		}
 		animation.render(screen, (int) x, (int) y, !isFacingLeft ? Screen.MIRROR_HORIZONTAL : 0);
 
+		// TODO : DEBUG ONLY
 		final Rectangle a = entityGeometry.getBounds();
 		screen.renderRectangle((int) x, (int) y, a.width, a.height, 0xFFFFFF00, true, 1);
-
 		for (final Point p : collisionsPoints)
 			screen.renderPixel(0xFFFF0000, (int) x + p.x, (int) y + p.y);
 	}

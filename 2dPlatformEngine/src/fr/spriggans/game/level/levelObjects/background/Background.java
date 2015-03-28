@@ -5,7 +5,6 @@ import fr.spriggans.gfx.Bitmap;
 import fr.spriggans.gfx.Screen;
 
 public class Background extends AbstractLevelElement {
-
 	public Background(int x, int y) {
 		super(x, y);
 		color = 0xFF777777;

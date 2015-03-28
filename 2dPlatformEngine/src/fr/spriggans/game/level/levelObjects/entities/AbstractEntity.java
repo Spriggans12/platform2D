@@ -10,7 +10,7 @@ import java.util.List;
 
 import fr.spriggans.game.level.Level;
 import fr.spriggans.game.level.levelObjects.AbstractLevelElement;
-import fr.spriggans.game.level.levelObjects.landscape.LandscapeCollidable;
+import fr.spriggans.game.level.levelObjects.landscape.AbstractLandscapeCollidable;
 import fr.spriggans.gfx.Animation;
 import fr.spriggans.gfx.Screen;
 
@@ -62,7 +62,7 @@ public class AbstractEntity extends AbstractLevelElement {
 	protected final int MAX_ITERATIONS = 3;
 
 	/** Objets collidables proches de l'entité. Seuls ces objets là seront testés pour les collisions pour éviter d'itérer sur tout. */
-	List<LandscapeCollidable> collidablesInVicinity = new ArrayList<LandscapeCollidable>();
+	List<AbstractLandscapeCollidable> collidablesInVicinity = new ArrayList<AbstractLandscapeCollidable>();
 
 	public AbstractEntity(int x, int y, Level level, int eWidth, int eHeight) {
 		super(x, y);
@@ -91,20 +91,20 @@ public class AbstractEntity extends AbstractLevelElement {
 			final Rectangle entityBounds = new Rectangle(a0, b0, a1 - a0, b1 - b0);
 
 			// On checke tous les objets pour voir s'ils sont proches de l'entité.
-			for (final LandscapeCollidable collidable : level.getCollisionLayer()) {
+			for (final AbstractLandscapeCollidable collidable : level.getCollisionLayer()) {
 				// Pas besoin de regarder à la main chacun des 4 cotés du collidable.
 				// En utilisant la ruse, on peut utiliser la BB combinée de l'entité et du collidable.
 				// Si la BB est plus haute|grosse que la hauteur|grosseur de l'entité + collidable,
 				// alors on est pas en collision; sinon, on l'est (faire un dessin, ça aide).
-				a0 = Math.min(entityBounds.x, collidable.getBoundingBox().x);
-				b0 = Math.min(entityBounds.y, collidable.getBoundingBox().y);
-				a1 = (int) Math.max(entityBounds.getMaxX(), collidable.getBoundingBox().getMaxX());
-				b1 = (int) Math.max(entityBounds.getMaxY(), collidable.getBoundingBox().getMaxY());
+				a0 = Math.min(entityBounds.x, collidable.getBoundingBoxRENAME_ME().x);
+				b0 = Math.min(entityBounds.y, collidable.getBoundingBoxRENAME_ME().y);
+				a1 = (int) Math.max(entityBounds.getMaxX(), collidable.getBoundingBoxRENAME_ME().getMaxX());
+				b1 = (int) Math.max(entityBounds.getMaxY(), collidable.getBoundingBoxRENAME_ME().getMaxY());
 				final Rectangle bounds = new Rectangle(a0, b0, a1 - a0, b1 - b0);
 
 				// Si la BB du collidable intersecte la BB de l'entité, on l'ajoute à la liste des objets proches.
-				if (bounds.getWidth() < collidable.getBoundingBox().getWidth() + entityBounds.getWidth()
-						&& bounds.getHeight() < collidable.getBoundingBox().getHeight() + entityBounds.getHeight())
+				if (bounds.getWidth() < collidable.getBoundingBoxRENAME_ME().getWidth() + entityBounds.getWidth()
+						&& bounds.getHeight() < collidable.getBoundingBoxRENAME_ME().getHeight() + entityBounds.getHeight())
 					collidablesInVicinity.add(collidable);
 			}
 			float projectedMoveX, projectedMoveY;
@@ -123,8 +123,7 @@ public class AbstractEntity extends AbstractLevelElement {
 				// ----------------------------
 
 				final Area specAABB = new Area(entityBounds);
-				// TODO : Ajouter une geometry aux landscapes !!!
-				final Area specCollidable = new Area(new Rectangle(collidablesInVicinity.get(k).getBoundingBox()));
+				final Area specCollidable = new Area(collidablesInVicinity.get(k).getGeometry());
 				specAABB.intersect(specCollidable);
 				final Rectangle specIntBounds = specAABB.getBounds();
 				if (specIntBounds.height >= 1 && specIntBounds.width >= 1) {
@@ -150,13 +149,11 @@ public class AbstractEntity extends AbstractLevelElement {
 						vectorLength -= safeVecLength;
 						segments = 0;
 
-						// TODO : Créer un objet Geometry pour les collisions plus compliquées.
-
 						// Avance le long de la droite du mouvement prévu jusqu'à collision avec le collidable.
 						// On checke pour chaque direction la paire des points de collisions définie dans le constructeur de l'entité.
-						while (!collidablesInVicinity.get(k).getBoundingBox().contains((collisionsPoints[dir * 2].x + x + projectedMoveX),
+						while (!collidablesInVicinity.get(k).getGeometry().contains((collisionsPoints[dir * 2].x + x + projectedMoveX),
 								(collisionsPoints[dir * 2].y + y + projectedMoveY))
-								&& !collidablesInVicinity.get(k).getBoundingBox().contains(
+								&& !collidablesInVicinity.get(k).getGeometry().contains(
 										(collisionsPoints[dir * 2 + 1].x + x + projectedMoveX),
 										(collisionsPoints[dir * 2 + 1].y + y + projectedMoveY)) && segments < vectorLength) {
 							projectedMoveX += nextMoveX / vectorLength;
@@ -185,45 +182,29 @@ public class AbstractEntity extends AbstractLevelElement {
 				// --------------------------
 				// ie : si collision à droite, décaler l'entité vers la gauche slightly.
 
-				// final Rectangle entityNextBounds = new Rectangle((int) x + (int) nextMoveX, (int) y + (int) nextMoveY, entityWidth,
-				// entityHeight);
-
-				// TODO : shape différente pour le collidable !!!
-
 				// Calcul de l'intersection de la geometry de l'entité et du collidable.
-				final Area collidableArea = new Area(new Rectangle(collidablesInVicinity.get(k).getBoundingBox()));
-
-				System.out.println(collidablesInVicinity.get(k).getBoundingBox().x + " " + collidablesInVicinity.get(k).getBoundingBox().y
-						+ " " + collidablesInVicinity.get(k).getBoundingBox().width + " "
-						+ collidablesInVicinity.get(k).getBoundingBox().height);
+				final Area collidableArea = new Area(collidablesInVicinity.get(k).getGeometry());
 				final Area entityArea = new Area(entityGeometry);
 				entityArea.transform(AffineTransform.getTranslateInstance((int) (x + nextMoveX), (int) (y + nextMoveY)));
 				entityArea.intersect(collidableArea);
 				final Rectangle intersection = entityArea.getBounds();
-
 				for (int dir = 0; dir < 4; dir++) {
-					if (entityArea.contains((collisionsPoints[dir * 2].x + x + nextMoveX), (collisionsPoints[dir * 2].y + y + nextMoveY))
-							|| entityArea.contains((collisionsPoints[dir * 2 + 1].x + x + nextMoveX),
-									(collisionsPoints[dir * 2 + 1].y + y + nextMoveY))) {
-
-						System.out.println("#" + dir);
-
+					if (entityArea.contains((int) (collisionsPoints[dir * 2].x + x + nextMoveX),
+							(int) (collisionsPoints[dir * 2].y + y + nextMoveY))
+							|| entityArea.contains((int) (collisionsPoints[dir * 2 + 1].x + x + nextMoveX),
+									(int) (collisionsPoints[dir * 2 + 1].y + y + nextMoveY))) {
 						switch (dir) {
 						case 0:
 							nextMoveY += intersection.height;
-							System.out.println(intersection.height);
 							break;
 						case 1:
 							nextMoveY -= intersection.height;
-							System.out.println(-intersection.height);
 							break;
 						case 2:
 							nextMoveX += intersection.width;
-							System.out.println(intersection.width);
 							break;
 						case 3:
 							nextMoveX -= intersection.width;
-							System.out.println(-intersection.width);
 							break;
 						}
 					}
@@ -236,8 +217,6 @@ public class AbstractEntity extends AbstractLevelElement {
 					contactYBottom = true;
 				if (Math.abs(nextMoveX - originalMoveX) > 0.01f)
 					contactX = true;
-
-				// TODO : tester ce comportement
 				// On arrête le saut du player s'il touche un mur horizontalement.
 				if (contactX && contactYTop && speedY < 0)
 					speedY = nextMoveY = 0;
@@ -305,7 +284,7 @@ public class AbstractEntity extends AbstractLevelElement {
 	@Override
 	public void render(Screen screen) {
 		// TODO : debug only : affichage des BB des voisins.
-		for (final LandscapeCollidable collidable : collidablesInVicinity) {
+		for (final AbstractLandscapeCollidable collidable : collidablesInVicinity) {
 			collidable.renderBoundingBox(screen);
 		}
 		animation.render(screen, (int) x, (int) y);

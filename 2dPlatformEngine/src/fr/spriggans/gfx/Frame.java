@@ -1,20 +1,15 @@
 package fr.spriggans.gfx;
 
-/**
- * Une frame est un objet contenant une image et une duree d'affichage. La duree
- * est definie sur les ticks, pas les renders. Il y a 60 ticks/s peut importe
- * les fps.
- */
+/** Une frame est un objet contenant une image et une durée d'affichage. <br/>
+ * La durée est définie sur les ticks, pas les renders. Il y a 60 ticks/s peut importe les fps. */
 public class Frame {
 	private int[] pixels;
 	private int width;
 	private int height;
 	private int duration;
 
-	public Frame(SpriteSheet spriteSheet, int indexSpriteX, int indexSpriteY,
-			int duration) {
-		this.pixels = spriteSheet
-				.getSpritePixelsFor(indexSpriteX, indexSpriteY);
+	public Frame(SpriteSheet spriteSheet, int indexSpriteX, int indexSpriteY, int duration) {
+		this.pixels = spriteSheet.getSpritePixelsFor(indexSpriteX, indexSpriteY);
 		this.duration = duration;
 		this.width = spriteSheet.getSpritesWidth();
 		this.height = spriteSheet.getSpritesHeight();

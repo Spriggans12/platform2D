@@ -7,19 +7,13 @@ import fr.spriggans.game.level.Level;
 import fr.spriggans.gfx.Screen;
 
 public class Game {
-
-	private final List<Level> levelList;
+	private final List<Level> levelList = new ArrayList<Level>();
 	private int currentLevelIndex;
 
 	public Game(Inputs inputs, Screen screen) {
 		currentLevelIndex = 0;
-		levelList = new ArrayList<Level>();
 		levelList.add(new Level(inputs));
-		levelList.add(new Level(inputs));
-		levelList.add(new Level(inputs));
-		levelList.add(new Level(inputs));
-		screen.calibrateScreenToLevel(levelList.get(currentLevelIndex)
-				.getWidth(), levelList.get(currentLevelIndex).getHeight());
+		screen.calibrateScreenToLevel(levelList.get(currentLevelIndex).getWidth(), levelList.get(currentLevelIndex).getHeight());
 	}
 
 	public void tick(Screen screen) {
@@ -28,8 +22,7 @@ public class Game {
 			currentLevelIndex++;
 			if (currentLevelIndex == levelList.size())
 				currentLevelIndex = 0;
-			screen.calibrateScreenToLevel(levelList.get(currentLevelIndex)
-					.getWidth(), levelList.get(currentLevelIndex).getHeight());
+			screen.calibrateScreenToLevel(levelList.get(currentLevelIndex).getWidth(), levelList.get(currentLevelIndex).getHeight());
 		}
 	}
 

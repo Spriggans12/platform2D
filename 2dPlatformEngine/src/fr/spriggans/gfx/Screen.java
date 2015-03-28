@@ -104,6 +104,34 @@ public class Screen {
 				renderPixel(pxls[j * w + i], x + i, y + j);
 	}
 
+	public void renderEllipse(int xNW, int yNW, int totalW, int totalH, int col) {
+		xNW -= xOffs;
+		yNW -= yOffs;
+		final int xCenter = xNW + totalW / 2;
+		final int yCenter = yNW + totalH / 2;
+		final float rX2 = totalW * totalW / 4;
+		final float rY2 = totalH * totalH / 4;
+
+		for (int j = 0; j < totalH; j++) {
+			final int jPixel = j + yNW;
+			if (jPixel < compHeight1 || jPixel >= compHeight2)
+				continue;
+			int yDiff2 = jPixel - yCenter;
+			yDiff2 *= yDiff2;
+			for (int i = 0; i < totalW; i++) {
+				final int iPixel = i + xNW;
+				if (iPixel < compWidth1 || iPixel >= compWidth2)
+					continue;
+				if (col == 0x00000000)
+					continue;
+				final int xDiff = iPixel - xCenter;
+				if (xDiff * xDiff / rX2 + yDiff2 / rY2 < 1)
+					pixels[jPixel * width + iPixel] = col;
+			}
+		}
+
+	}
+
 	public boolean isOutsideScreen(int x, int y, int w, int h) {
 		return x + w < compWidth1 || x >= compWidth2 || y + h < compHeight1 || y >= compHeight2;
 	}
