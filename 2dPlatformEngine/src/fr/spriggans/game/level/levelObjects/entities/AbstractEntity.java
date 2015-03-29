@@ -71,6 +71,32 @@ public class AbstractEntity extends AbstractLevelElement {
 		this.entityHeight = eHeight;
 	}
 
+	protected void initGeometryFromCollisionPoints() {
+		xPointsShape = new int[8];
+		yPointsShape = new int[8];
+		xPointsShape[0] = collisionsPoints[0].x;
+		yPointsShape[0] = collisionsPoints[0].y;
+		xPointsShape[1] = collisionsPoints[1].x;
+		yPointsShape[1] = collisionsPoints[1].y;
+		xPointsShape[2] = collisionsPoints[6].x + 1;
+		yPointsShape[2] = collisionsPoints[6].y;
+		xPointsShape[3] = collisionsPoints[7].x + 1;
+		yPointsShape[3] = collisionsPoints[7].y;
+		xPointsShape[4] = collisionsPoints[3].x;
+		yPointsShape[4] = collisionsPoints[3].y + 1;
+		xPointsShape[5] = collisionsPoints[2].x;
+		yPointsShape[5] = collisionsPoints[2].y + 1;
+		xPointsShape[6] = collisionsPoints[5].x;
+		yPointsShape[6] = collisionsPoints[5].y;
+		xPointsShape[7] = collisionsPoints[4].x;
+		yPointsShape[7] = collisionsPoints[4].y;
+		entityGeometry = new GeneralPath(GeneralPath.WIND_EVEN_ODD, xPointsShape.length);
+		entityGeometry.moveTo(xPointsShape[0], yPointsShape[0]);
+		for (int i = 0; i < xPointsShape.length; i++)
+			entityGeometry.lineTo(xPointsShape[i], yPointsShape[i]);
+		entityGeometry.closePath();
+	}
+
 	@Override
 	public void tick() {
 		// Flags pour savoir le type de collision.
@@ -96,15 +122,15 @@ public class AbstractEntity extends AbstractLevelElement {
 				// En utilisant la ruse, on peut utiliser la BB combinée de l'entité et du collidable.
 				// Si la BB est plus haute|grosse que la hauteur|grosseur de l'entité + collidable,
 				// alors on est pas en collision; sinon, on l'est (faire un dessin, ça aide).
-				a0 = Math.min(entityBounds.x, collidable.getBoundingBoxRENAME_ME().x);
-				b0 = Math.min(entityBounds.y, collidable.getBoundingBoxRENAME_ME().y);
-				a1 = (int) Math.max(entityBounds.getMaxX(), collidable.getBoundingBoxRENAME_ME().getMaxX());
-				b1 = (int) Math.max(entityBounds.getMaxY(), collidable.getBoundingBoxRENAME_ME().getMaxY());
+				a0 = Math.min(entityBounds.x, collidable.getBoundingBox().x);
+				b0 = Math.min(entityBounds.y, collidable.getBoundingBox().y);
+				a1 = (int) Math.max(entityBounds.getMaxX(), collidable.getBoundingBox().getMaxX());
+				b1 = (int) Math.max(entityBounds.getMaxY(), collidable.getBoundingBox().getMaxY());
 				final Rectangle bounds = new Rectangle(a0, b0, a1 - a0, b1 - b0);
 
 				// Si la BB du collidable intersecte la BB de l'entité, on l'ajoute à la liste des objets proches.
-				if (bounds.getWidth() < collidable.getBoundingBoxRENAME_ME().getWidth() + entityBounds.getWidth()
-						&& bounds.getHeight() < collidable.getBoundingBoxRENAME_ME().getHeight() + entityBounds.getHeight())
+				if (bounds.getWidth() < collidable.getBoundingBox().getWidth() + entityBounds.getWidth()
+						&& bounds.getHeight() < collidable.getBoundingBox().getHeight() + entityBounds.getHeight())
 					collidablesInVicinity.add(collidable);
 			}
 			float projectedMoveX, projectedMoveY;

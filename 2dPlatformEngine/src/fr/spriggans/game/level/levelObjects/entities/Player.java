@@ -2,7 +2,6 @@ package fr.spriggans.game.level.levelObjects.entities;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.GeneralPath;
 
 import fr.spriggans.game.Inputs;
 import fr.spriggans.game.level.Level;
@@ -24,18 +23,11 @@ public class Player extends AbstractEntity {
 		super(x, y, level, PL_W, PL_H);
 
 		collisionsPoints = new Point[] { new Point(4, 0), new Point(14, 0), new Point(4, 39), new Point(14, 39), new Point(0, 9), new Point(
-				0, 29), new Point(19, 9), new Point(19, 29), };
-		xPointsShape = new int[] { 5, 15, 20, 20, 15, 5, 0, 0 };
-		yPointsShape = new int[] { 0, 0, 10, 30, 40, 40, 30, 10 };
-		entityGeometry = new GeneralPath(GeneralPath.WIND_EVEN_ODD, xPointsShape.length);
-		entityGeometry.moveTo(xPointsShape[0], yPointsShape[0]);
-		for (int i = 0; i < xPointsShape.length; i++)
-			entityGeometry.lineTo(xPointsShape[i], yPointsShape[i]);
-		entityGeometry.closePath();
-
-		// TODO : les placer dans le constructeur d'entités.
+				0, 29), new Point(19, 9), new Point(19, 29) };
+		initGeometryFromCollisionPoints();
 
 		final int S = 1;
+		// TODO : les placer dans le constructeur d'entités.
 
 		this.groundFriction = 0.3f * S;
 		this.groundAcceleration = 0.2f * S;
@@ -116,11 +108,12 @@ public class Player extends AbstractEntity {
 		for (final AbstractLandscapeCollidable collidable : collidablesInVicinity) {
 			collidable.renderBoundingBox(screen);
 		}
-		animation.render(screen, (int) x, (int) y, !isFacingLeft ? Screen.MIRROR_HORIZONTAL : 0);
+		// animation.render(screen, (int) x, (int) y, !isFacingLeft ? Screen.MIRROR_HORIZONTAL : 0);
 
 		// TODO : DEBUG ONLY
 		final Rectangle a = entityGeometry.getBounds();
 		screen.renderRectangle((int) x, (int) y, a.width, a.height, 0xFFFFFF00, true, 1);
+		System.out.println(a.width + "  " + a.height);
 		for (final Point p : collisionsPoints)
 			screen.renderPixel(0xFFFF0000, (int) x + p.x, (int) y + p.y);
 	}

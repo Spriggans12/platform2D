@@ -26,7 +26,7 @@ public abstract class AbstractLandscapeCollidable extends AbstractLevelElement {
 		screen.renderRectangle(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height, 0xFFFF0000, true, 2);
 	}
 
-	public Rectangle getBoundingBoxRENAME_ME() {
+	public Rectangle getBoundingBox() {
 		return boundingBox;
 	}
 
