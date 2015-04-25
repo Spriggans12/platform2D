@@ -254,7 +254,7 @@ public class AbstractEntity extends AbstractLevelElement {
 			if (contactYBottom || contactYTop) {
 				y += nextMoveY;
 				speedY = 0;
-				if (contactYBottom)
+				if (contactYBottom && !contactX)
 					jumping = false;
 			}
 			if (contactX) {
