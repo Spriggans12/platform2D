@@ -34,43 +34,65 @@ public class Level {
 	/** Liste contenant les backgrounds du level. */
 	private final List<Background> backgroundLayer = new ArrayList<Background>();
 
-	public Level(Inputs inputs) {
+	public Level(Inputs inputs, int levelId) {
 		// TODO LOAD THIS DIFFERENTLY.
-		this.width = 2000;
-		this.height = 1100;
 
-		getLivingEntitiesLayer().add(new Player(200, 200, this, inputs));
+		if (levelId == 1) {
+			this.width = 1000;
+			this.height = 500;
 
-		backgroundLayer.add(new Background(0, 0));
+			livingEntitiesLayer.add(new Player(200, 100, this, inputs));
 
-		collisionLayer.add(new LandscapeCollidableRectangle(130, height - 150, 200, 30));
-		collisionLayer.add(new LandscapeCollidableRectangle(30, height - 70, 30, 30));
-		collisionLayer.add(new LandscapeCollidableRectangle(80, height - 120, 30, 30));
-		collisionLayer.add(new LandscapeCollidableRectangle(350, height - 320, 30, 250));
-		collisionLayer.add(new LandscapeCollidableRectangle(450, height - 90, 40, 3));
-		collisionLayer.add(new LandscapeCollidableRectangle(350, height - 100, 100, 30));
+			collisionLayer.add(new LandscapeCollidableRectangle(0, 350, 1000, 30, 100));
 
-		collisionLayer.add(new LandscapeCollidableRectangle(250, height - 240, 100, 30));
-		collisionLayer.add(new LandscapeCollidableRectangle(50, height - 240, 100, 30));
+			// collisionLayer.add(new LandscapeCollidableRectangle(100, 300, 500, 30, -50));
 
-		collisionLayer.add(new LandscapeCollidableEllipse(120, height - 520, 900, 300));
+			// Bords de la map.
+			final int s = 30;
+			collisionLayer.add(new LandscapeCollidableRectangle(0, 0, width, s));
+			collisionLayer.add(new LandscapeCollidableRectangle(0, height - s, width, s));
+			collisionLayer.add(new LandscapeCollidableRectangle(0, 0, s, height));
+			collisionLayer.add(new LandscapeCollidableRectangle(width - s, 0, s, height));
+		}
 
-		// Escaliers
-		for (int i = 0; i < 20; i++)
-			collisionLayer.add(new LandscapeCollidableRectangle(450 + i * 30, height - 30 - i * 10, 50, 30));
-		for (int i = 0; i < 20; i++)
-			collisionLayer.add(new LandscapeCollidableRectangle(350 + i * 30, height - 320 - 3 * i, 50, 30));
-		for (int i = 0; i < 20; i++)
-			collisionLayer.add(new LandscapeCollidableRectangle(350 + 20 * 30 + i * 30, height - 320 - 3 * 20 + 3 * i, 50, 30));
+		if (levelId == 0) {
+			this.width = 2000;
+			this.height = 1100;
 
-		for (int i = 0; i < 20; i++)
-			collisionLayer.add(new LandscapeCollidableRectangle(width - 150 - i * 30, i, 50, 30));
+			livingEntitiesLayer.add(new Player(200, 200, this, inputs));
 
-		final int s = 30;
-		collisionLayer.add(new LandscapeCollidableRectangle(0, 0, width, s));
-		collisionLayer.add(new LandscapeCollidableRectangle(0, height - s, width, s));
-		collisionLayer.add(new LandscapeCollidableRectangle(0, 0, s, height));
-		collisionLayer.add(new LandscapeCollidableRectangle(width - s, 0, s, height));
+			// backgroundLayer.add(new Background(0, 0));
+
+			collisionLayer.add(new LandscapeCollidableRectangle(130, height - 150, 200, 30));
+			collisionLayer.add(new LandscapeCollidableRectangle(30, height - 70, 30, 30));
+			collisionLayer.add(new LandscapeCollidableRectangle(80, height - 120, 30, 30));
+			collisionLayer.add(new LandscapeCollidableRectangle(350, height - 320, 30, 250));
+			collisionLayer.add(new LandscapeCollidableRectangle(450, height - 90, 40, 3));
+			collisionLayer.add(new LandscapeCollidableRectangle(350, height - 100, 100, 30));
+
+			collisionLayer.add(new LandscapeCollidableRectangle(250, height - 240, 100, 30));
+			collisionLayer.add(new LandscapeCollidableRectangle(50, height - 240, 100, 30));
+
+			collisionLayer.add(new LandscapeCollidableEllipse(120, height - 520, 3000, 300));
+
+			// Escaliers
+			for (int i = 0; i < 20; i++)
+				collisionLayer.add(new LandscapeCollidableRectangle(450 + i * 30, height - 30 - i * 10, 50, 30));
+			for (int i = 0; i < 20; i++)
+				collisionLayer.add(new LandscapeCollidableRectangle(350 + i * 30, height - 320 - 3 * i, 50, 30));
+			for (int i = 0; i < 20; i++)
+				collisionLayer.add(new LandscapeCollidableRectangle(350 + 20 * 30 + i * 30, height - 320 - 3 * 20 + 3 * i, 50, 30));
+
+			for (int i = 0; i < 20; i++)
+				collisionLayer.add(new LandscapeCollidableRectangle(width - 150 - i * 30, i, 50, 30));
+
+			final int s = 30;
+			collisionLayer.add(new LandscapeCollidableRectangle(0, 0, width, s));
+			collisionLayer.add(new LandscapeCollidableRectangle(0, height - s, width, s));
+			collisionLayer.add(new LandscapeCollidableRectangle(0, 0, s, height));
+			collisionLayer.add(new LandscapeCollidableRectangle(width - s, 0, s, height));
+		}
+
 	}
 
 	public void tick() {
@@ -111,9 +133,9 @@ public class Level {
 		screen.setOffsets(xOffs, yOffs);
 		screen.blackOut();
 
-		for (final Background bg : backgroundLayer) {
-			bg.render(screen);
-		}
+		// for (final Background bg : backgroundLayer) {
+		// bg.render(screen);
+		// }
 		// for (final LandscapeNotCollidable deco : decorativeLayer) {
 		// deco.render(screen);
 		// }

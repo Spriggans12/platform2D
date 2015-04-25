@@ -4,9 +4,9 @@ import fr.spriggans.gfx.Screen;
 
 public abstract class AbstractLevelElement {
 	/** Coordonnee coin NW pour l'affichage */
-	protected float x;
+	protected int x;
 	/** Coordonnee coin NW pour l'affichage */
-	protected float y;
+	protected int y;
 
 	public AbstractLevelElement(int x, int y) {
 		this.x = x;

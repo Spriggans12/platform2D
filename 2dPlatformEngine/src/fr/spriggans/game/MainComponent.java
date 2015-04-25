@@ -81,7 +81,7 @@ public class MainComponent extends Canvas implements Runnable {
 				delta -= secondsPerTick;
 				ticked = true;
 				if (ticks % FPS == 0) {
-					if (Launcher.DEBUG)
+					if (Launcher.DEBUG_SHOW_FPS)
 						System.out.println("fps : " + fps);
 					lastTime += 1000;
 					fps = 0;

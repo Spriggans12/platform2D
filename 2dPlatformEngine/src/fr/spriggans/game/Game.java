@@ -12,7 +12,7 @@ public class Game {
 
 	public Game(Inputs inputs, Screen screen) {
 		currentLevelIndex = 0;
-		levelList.add(new Level(inputs));
+		levelList.add(new Level(inputs, 0));
 		screen.calibrateScreenToLevel(levelList.get(currentLevelIndex).getWidth(), levelList.get(currentLevelIndex).getHeight());
 	}
 

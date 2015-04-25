@@ -65,6 +65,81 @@ public class Screen {
 		}
 	}
 
+	public void renderParallelogram(int x, int y, int w, int h, int dh, int col) {
+		x -= xOffs;
+		y -= yOffs;
+
+		// On render les traits verticaux.
+		for (int j = 0; j < h; j++) {
+			final int jPixel = j + y;
+			if (jPixel < compHeight1 || jPixel >= compHeight2)
+				continue;
+			if (x < compWidth1 || x > compWidth2)
+				continue;
+			pixels[jPixel * width + x] = col;
+		}
+		for (int j = 0; j < h; j++) {
+			final int jPixel = j + y + dh;
+			if (jPixel < compHeight1 || jPixel >= compHeight2)
+				continue;
+			final int iPixel = x + w;
+			if (!(iPixel < compWidth1 || iPixel > compWidth2))
+				pixels[jPixel * width + iPixel] = col;
+		}
+
+		// On render les traits diagonaux
+		line(x, y, x + w, y + dh, col);
+		line(x, y + h, x + w, y + dh + h, col);
+
+	}
+
+	/** Attention : il faut que x et y aient déjà comptés les offsets. */
+	private void line(int x, int y, int x2, int y2, int color) {
+		final int w = x2 - x;
+		final int h = y2 - y;
+		int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
+		if (w < 0)
+			dx1 = -1;
+		else if (w > 0)
+			dx1 = 1;
+		if (h < 0)
+			dy1 = -1;
+		else if (h > 0)
+			dy1 = 1;
+		if (w < 0)
+			dx2 = -1;
+		else if (w > 0)
+			dx2 = 1;
+		int longest = Math.abs(w);
+		int shortest = Math.abs(h);
+		if (!(longest > shortest)) {
+			longest = Math.abs(h);
+			shortest = Math.abs(w);
+			if (h < 0)
+				dy2 = -1;
+			else if (h > 0)
+				dy2 = 1;
+			dx2 = 0;
+		}
+		int numerator = longest >> 1;
+		for (int i = 0; i <= longest; i++) {
+
+			if (isOutsideScreen(x, y, 0, 0))
+				return;
+			pixels[y * width + x] = color;
+
+			numerator += shortest;
+			if (!(numerator < longest)) {
+				numerator -= longest;
+				x += dx1;
+				y += dy1;
+			} else {
+				x += dx2;
+				y += dy2;
+			}
+		}
+	}
+
 	public void renderSquare(int x, int y, int size, int col) {
 		renderRectangle(x, y, size, size, col);
 	}

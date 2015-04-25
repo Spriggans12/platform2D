@@ -13,7 +13,7 @@ public abstract class AbstractLandscapeCollidable extends AbstractLevelElement {
 	/** Geometrie de l'objet collidable. */
 	protected GeneralPath geometry;
 
-	public AbstractLandscapeCollidable(int x, int y, int w, int h) {
+	public AbstractLandscapeCollidable(int x, int y) {
 		super(x, y);
 		color = 0xFF00FF00;
 	}
