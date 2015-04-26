@@ -16,15 +16,15 @@ import fr.spriggans.gfx.Screen;
 
 public class AbstractEntity extends AbstractLevelElement {
 	/** La vitesse horizontale. */
-	protected int speedX;
+	protected float speedX;
 	/** La vitesse verticale. */
-	protected int speedY;
+	protected float speedY;
 	/** Taille de la boundingBox. */
 	protected int entityWidth;
 	/** Taille de la boundingBox. */
 	protected int entityHeight;
 	/** gravity/f */
-	protected int gravityStrength = 0;
+	protected float gravityStrength = 0;
 	/** friction/f */
 	protected int groundFriction = 0;
 	/** Accélération au sol/f. */
@@ -107,8 +107,8 @@ public class AbstractEntity extends AbstractLevelElement {
 		for (int iteration = 0; iteration < MAX_ITERATIONS && (contactX || contactYBottom || contactYTop); iteration++) {
 			collidablesInVicinity.clear();
 			contactX = contactYBottom = contactYTop = false;
-			int nextMoveX = speedX;
-			int nextMoveY = speedY;
+			int nextMoveX = (int) speedX;
+			int nextMoveY = (int) speedY;
 
 			// On calcule le bounding box englobant le mouvement de l'entité.
 			int a0 = Math.min(x, x + nextMoveX);
@@ -263,8 +263,8 @@ public class AbstractEntity extends AbstractLevelElement {
 			}
 		}
 		// Update la position de l'entité.
-		x += speedX;
-		y += speedY;
+		x += (int) speedX;
+		y += (int) speedY;
 
 		final boolean movingSideways = applyInputs();
 		applyGravity();

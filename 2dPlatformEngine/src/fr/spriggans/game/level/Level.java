@@ -3,15 +3,20 @@ package fr.spriggans.game.level;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.spriggans.game.Inputs;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import fr.spriggans.game.level.levelObjects.AbstractLevelElement;
 import fr.spriggans.game.level.levelObjects.background.Background;
 import fr.spriggans.game.level.levelObjects.entities.Player;
 import fr.spriggans.game.level.levelObjects.landscape.AbstractLandscapeCollidable;
 import fr.spriggans.game.level.levelObjects.landscape.LandscapeCollidableEllipse;
-import fr.spriggans.game.level.levelObjects.landscape.LandscapeCollidableRectangle;
 import fr.spriggans.gfx.Screen;
+import fr.spriggans.jaxbMapping.LandscapeCollidableEllipseListAdapter;
 
+@XmlRootElement(name = "Level")
 public class Level {
 	/** Vrai si le level est fini. */
 	private boolean over;
@@ -26,7 +31,7 @@ public class Level {
 	private final List<AbstractLevelElement> interactiveLayer = new ArrayList<AbstractLevelElement>();
 
 	/** Liste contenant les tiles (sols, murs) collidables du level. */
-	private final List<AbstractLandscapeCollidable> collisionLayer = new ArrayList<AbstractLandscapeCollidable>();
+	private final List<LandscapeCollidableEllipse> collisionLayer = new ArrayList<LandscapeCollidableEllipse>();
 
 	/** Liste contenant les tiles non collidables du level. Utilisées pour décoration. */
 	// private final List<LandscapeNotCollidable> decorativeLayer = new ArrayList<LandscapeNotCollidable>();
@@ -34,64 +39,65 @@ public class Level {
 	/** Liste contenant les backgrounds du level. */
 	private final List<Background> backgroundLayer = new ArrayList<Background>();
 
-	public Level(Inputs inputs, int levelId) {
+	public Level() {
+		System.out.println("jaxb lvl created");
+
 		// TODO LOAD THIS DIFFERENTLY.
-
-		if (levelId == 1) {
-			this.width = 1000;
-			this.height = 500;
-
-			livingEntitiesLayer.add(new Player(200, 100, this, inputs));
-
-			collisionLayer.add(new LandscapeCollidableRectangle(0, 350, 1000, 30, 100));
-
-			// collisionLayer.add(new LandscapeCollidableRectangle(100, 300, 500, 30, -50));
-
-			// Bords de la map.
-			final int s = 30;
-			collisionLayer.add(new LandscapeCollidableRectangle(0, 0, width, s));
-			collisionLayer.add(new LandscapeCollidableRectangle(0, height - s, width, s));
-			collisionLayer.add(new LandscapeCollidableRectangle(0, 0, s, height));
-			collisionLayer.add(new LandscapeCollidableRectangle(width - s, 0, s, height));
-		}
-
-		if (levelId == 0) {
-			this.width = 2000;
-			this.height = 1100;
-
-			livingEntitiesLayer.add(new Player(200, 200, this, inputs));
-
-			// backgroundLayer.add(new Background(0, 0));
-
-			collisionLayer.add(new LandscapeCollidableRectangle(130, height - 150, 200, 30));
-			collisionLayer.add(new LandscapeCollidableRectangle(30, height - 70, 30, 30));
-			collisionLayer.add(new LandscapeCollidableRectangle(80, height - 120, 30, 30));
-			collisionLayer.add(new LandscapeCollidableRectangle(350, height - 320, 30, 250));
-			collisionLayer.add(new LandscapeCollidableRectangle(450, height - 90, 40, 3));
-			collisionLayer.add(new LandscapeCollidableRectangle(350, height - 100, 100, 30));
-
-			collisionLayer.add(new LandscapeCollidableRectangle(250, height - 240, 100, 30));
-			collisionLayer.add(new LandscapeCollidableRectangle(50, height - 240, 100, 30));
-
-			collisionLayer.add(new LandscapeCollidableEllipse(120, height - 520, 3000, 300));
-
-			// Escaliers
-			for (int i = 0; i < 20; i++)
-				collisionLayer.add(new LandscapeCollidableRectangle(450 + i * 30, height - 30 - i * 10, 50, 30));
-			for (int i = 0; i < 20; i++)
-				collisionLayer.add(new LandscapeCollidableRectangle(350 + i * 30, height - 320 - 3 * i, 50, 30));
-			for (int i = 0; i < 20; i++)
-				collisionLayer.add(new LandscapeCollidableRectangle(350 + 20 * 30 + i * 30, height - 320 - 3 * 20 + 3 * i, 50, 30));
-
-			for (int i = 0; i < 20; i++)
-				collisionLayer.add(new LandscapeCollidableRectangle(width - 150 - i * 30, i, 50, 30));
-
-			final int s = 30;
-			collisionLayer.add(new LandscapeCollidableRectangle(0, 0, width, s));
-			collisionLayer.add(new LandscapeCollidableRectangle(0, height - s, width, s));
-			collisionLayer.add(new LandscapeCollidableRectangle(0, 0, s, height));
-			collisionLayer.add(new LandscapeCollidableRectangle(width - s, 0, s, height));
-		}
+		// if (levelId == 1) {
+		// this.width = 1000;
+		// this.height = 500;
+		//
+		// livingEntitiesLayer.add(new Player(200, 100, this, inputs));
+		//
+		// collisionLayer.add(new LandscapeCollidableRectangle(0, 350, 1000, 30, 100));
+		//
+		// // collisionLayer.add(new LandscapeCollidableRectangle(100, 300, 500, 30, -50));
+		//
+		// // Bords de la map.
+		// final int s = 30;
+		// collisionLayer.add(new LandscapeCollidableRectangle(0, 0, width, s));
+		// collisionLayer.add(new LandscapeCollidableRectangle(0, height - s, width, s));
+		// collisionLayer.add(new LandscapeCollidableRectangle(0, 0, s, height));
+		// collisionLayer.add(new LandscapeCollidableRectangle(width - s, 0, s, height));
+		// }
+		//
+		// if (levelId == 0) {
+		// this.width = 2000;
+		// this.height = 1100;
+		//
+		// livingEntitiesLayer.add(new Player(200, 200, this, inputs));
+		//
+		// // backgroundLayer.add(new Background(0, 0));
+		//
+		// collisionLayer.add(new LandscapeCollidableRectangle(130, height - 150, 200, 30));
+		// collisionLayer.add(new LandscapeCollidableRectangle(30, height - 70, 30, 30));
+		// collisionLayer.add(new LandscapeCollidableRectangle(80, height - 120, 30, 30));
+		// collisionLayer.add(new LandscapeCollidableRectangle(350, height - 320, 30, 250));
+		// collisionLayer.add(new LandscapeCollidableRectangle(450, height - 90, 40, 3));
+		// collisionLayer.add(new LandscapeCollidableRectangle(350, height - 100, 100, 30));
+		//
+		// collisionLayer.add(new LandscapeCollidableRectangle(250, height - 240, 100, 30));
+		// collisionLayer.add(new LandscapeCollidableRectangle(50, height - 240, 100, 30));
+		//
+		// collisionLayer.add(new LandscapeCollidableEllipse(120, height - 520, 3000, 300));
+		//
+		// // Escaliers
+		// for (int i = 0; i < 20; i++)
+		// collisionLayer.add(new LandscapeCollidableRectangle(450 + i * 30, height - 30 - i * 10, 50, 30));
+		// for (int i = 0; i < 20; i++)
+		// collisionLayer.add(new LandscapeCollidableRectangle(350 + i * 30, height - 320 - 3 * i, 50, 30));
+		// for (int i = 0; i < 20; i++)
+		// collisionLayer.add(new LandscapeCollidableRectangle(350 + 20 * 30 + i * 30, height - 320 - 3 * 20 + 3 * i, 50, 30));
+		//
+		// for (int i = 0; i < 20; i++)
+		// collisionLayer.add(new LandscapeCollidableRectangle(width - 150 - i * 30, i, 50, 30));
+		//
+		// final int s = 30;
+		// collisionLayer.add(new LandscapeCollidableRectangle(0, 0, width, s));
+		// collisionLayer.add(new LandscapeCollidableRectangle(0, height - s, width, s));
+		// collisionLayer.add(new LandscapeCollidableRectangle(0, 0, s, height));
+		// collisionLayer.add(new LandscapeCollidableRectangle(width - s, 0, s, height));
+		// }
 
 	}
 
@@ -158,6 +164,7 @@ public class Level {
 		this.over = over;
 	}
 
+	@XmlAttribute(name = "width")
 	public int getWidth() {
 		return width;
 	}
@@ -166,6 +173,7 @@ public class Level {
 		this.width = width;
 	}
 
+	@XmlAttribute(name = "height")
 	public int getHeight() {
 		return height;
 	}
@@ -182,7 +190,9 @@ public class Level {
 		return interactiveLayer;
 	}
 
-	public List<AbstractLandscapeCollidable> getCollisionLayer() {
+	@XmlJavaTypeAdapter(LandscapeCollidableEllipseListAdapter.class)
+	@XmlElement(name = "toto")
+	public List<LandscapeCollidableEllipse> getCollisionLayer() {
 		return collisionLayer;
 	}
 }

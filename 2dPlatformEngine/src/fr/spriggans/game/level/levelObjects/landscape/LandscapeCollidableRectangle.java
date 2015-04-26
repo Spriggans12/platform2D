@@ -3,8 +3,11 @@ package fr.spriggans.game.level.levelObjects.landscape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import fr.spriggans.gfx.Screen;
 
+@XmlRootElement(name = "rect")
 public class LandscapeCollidableRectangle extends AbstractLandscapeCollidable {
 
 	private boolean isSkewed;
@@ -12,6 +15,11 @@ public class LandscapeCollidableRectangle extends AbstractLandscapeCollidable {
 	private int dh;
 
 	private int initialHeight;
+
+	public LandscapeCollidableRectangle() {
+		super(25, 25);
+		System.out.println("Created rectangle");
+	}
 
 	public LandscapeCollidableRectangle(int x0, int y0, int w, int h) {
 		super(x0, y0);
@@ -44,9 +52,9 @@ public class LandscapeCollidableRectangle extends AbstractLandscapeCollidable {
 	@Override
 	public void render(Screen screen) {
 		if (!isSkewed)
-			screen.renderRectangle((int) x, (int) y, boundingBox.width, boundingBox.height, color, true, 1);
+			screen.renderRectangle(x, y, boundingBox.width, boundingBox.height, color, true, 1);
 		else
-			screen.renderParallelogram((int) x, (int) y, boundingBox.width, initialHeight, dh, color);
+			screen.renderParallelogram(x, y, boundingBox.width, initialHeight, dh, color);
 	}
 
 	public boolean getIsSkewed() {

@@ -3,9 +3,12 @@ package fr.spriggans.game.level.levelObjects.landscape;
 import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 import fr.spriggans.game.level.levelObjects.AbstractLevelElement;
 import fr.spriggans.gfx.Screen;
 
+@XmlSeeAlso({ LandscapeCollidableRectangle.class, LandscapeCollidableEllipse.class })
 public abstract class AbstractLandscapeCollidable extends AbstractLevelElement {
 	/** BoundingBox de l'objet collidable. Englobe totalement l'objet. */
 	protected Rectangle boundingBox;

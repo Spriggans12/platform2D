@@ -31,7 +31,7 @@ public class Player extends AbstractEntity {
 
 		this.groundFriction = (int) (30 * S);
 		this.groundAcceleration = (int) (10 * S);
-		this.gravityStrength = (int) (5 * S);
+		this.gravityStrength = (1 * S);
 		this.groundJumpSpeed = (int) (100 * S);
 		this.maxSpeedX = (int) (50 * S);
 		this.maxSpeedY = (int) (100 * S);

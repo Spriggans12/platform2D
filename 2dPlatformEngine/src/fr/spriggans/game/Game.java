@@ -1,7 +1,12 @@
 package fr.spriggans.game;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import fr.spriggans.game.level.Level;
 import fr.spriggans.gfx.Screen;
@@ -11,9 +16,23 @@ public class Game {
 	private int currentLevelIndex;
 
 	public Game(Inputs inputs, Screen screen) {
-		currentLevelIndex = 0;
-		levelList.add(new Level(inputs, 1));
-		screen.calibrateScreenToLevel(levelList.get(currentLevelIndex).getWidth(), levelList.get(currentLevelIndex).getHeight());
+		try {
+			currentLevelIndex = 0;
+
+			// Unmarshalling of the level.
+			final JAXBContext jabxbContext = JAXBContext.newInstance(Level.class);
+			final Unmarshaller unmarshaller = jabxbContext.createUnmarshaller();
+			final Level lvl = (Level) unmarshaller.unmarshal(new File("C:\\Users\\Spriggans\\Desktop\\level.xml"));
+
+			System.out.println(lvl);
+
+			levelList.add(lvl);
+
+			screen.calibrateScreenToLevel(levelList.get(currentLevelIndex).getWidth(), levelList.get(currentLevelIndex).getHeight());
+		} catch (final JAXBException e) {
+			e.printStackTrace();
+			System.err.println("Error unmarshalling xml file.");
+		}
 	}
 
 	public void tick(Screen screen) {
