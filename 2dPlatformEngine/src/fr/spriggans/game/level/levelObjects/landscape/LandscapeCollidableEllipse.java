@@ -7,11 +7,6 @@ import fr.spriggans.gfx.Screen;
 
 public class LandscapeCollidableEllipse extends AbstractLandscapeCollidable {
 
-	public LandscapeCollidableEllipse() {
-		super(42, 42);
-		System.out.println("created ellipse");
-	}
-
 	public LandscapeCollidableEllipse(int xNW, int yNW, int totalW, int totalH) {
 		super(xNW, yNW);
 		this.color = 0xFF00FFFF;

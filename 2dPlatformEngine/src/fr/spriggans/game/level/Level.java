@@ -10,56 +10,39 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import fr.spriggans.game.level.levelObjects.AbstractLevelElement;
 import fr.spriggans.game.level.levelObjects.background.Background;
+import fr.spriggans.game.level.levelObjects.entities.AbstractEntity;
 import fr.spriggans.game.level.levelObjects.entities.Player;
 import fr.spriggans.game.level.levelObjects.landscape.AbstractLandscapeCollidable;
-import fr.spriggans.game.level.levelObjects.landscape.LandscapeCollidableEllipse;
 import fr.spriggans.gfx.Screen;
-import fr.spriggans.jaxbMapping.LandscapeCollidableEllipseListAdapter;
+import fr.spriggans.jaxbMapping.adapters.AbstractEntityListAdapter;
+import fr.spriggans.jaxbMapping.adapters.AbstractLandscapeCollidableListAdapter;
+import fr.spriggans.jaxbMapping.adapters.BackgroundListAdapter;
 
-@XmlRootElement(name = "Level")
+@XmlRootElement(name = "level")
 public class Level {
 	/** Vrai si le level est fini. */
 	private boolean over;
 	private int width;
 	private int height;
 
-	// TODO : Ajouter la couche player ?
 	/** Liste contenant les entites mobiles ayant une IA. */
-	private final List<AbstractLevelElement> livingEntitiesLayer = new ArrayList<AbstractLevelElement>();
+	private List<AbstractEntity> livingEntitiesLayer = new ArrayList<AbstractEntity>();
 
 	/** Liste contenant les objets interactifs (items, projectiles, boutons...). */
-	private final List<AbstractLevelElement> interactiveLayer = new ArrayList<AbstractLevelElement>();
+	private List<AbstractLevelElement> interactiveLayer = new ArrayList<AbstractLevelElement>();
 
 	/** Liste contenant les tiles (sols, murs) collidables du level. */
-	private final List<LandscapeCollidableEllipse> collisionLayer = new ArrayList<LandscapeCollidableEllipse>();
+	private List<AbstractLandscapeCollidable> collisionLayer = new ArrayList<AbstractLandscapeCollidable>();
 
 	/** Liste contenant les tiles non collidables du level. Utilisées pour décoration. */
 	// private final List<LandscapeNotCollidable> decorativeLayer = new ArrayList<LandscapeNotCollidable>();
 
 	/** Liste contenant les backgrounds du level. */
-	private final List<Background> backgroundLayer = new ArrayList<Background>();
+	private List<Background> backgroundLayer = new ArrayList<Background>();
 
 	public Level() {
 		System.out.println("jaxb lvl created");
 
-		// TODO LOAD THIS DIFFERENTLY.
-		// if (levelId == 1) {
-		// this.width = 1000;
-		// this.height = 500;
-		//
-		// livingEntitiesLayer.add(new Player(200, 100, this, inputs));
-		//
-		// collisionLayer.add(new LandscapeCollidableRectangle(0, 350, 1000, 30, 100));
-		//
-		// // collisionLayer.add(new LandscapeCollidableRectangle(100, 300, 500, 30, -50));
-		//
-		// // Bords de la map.
-		// final int s = 30;
-		// collisionLayer.add(new LandscapeCollidableRectangle(0, 0, width, s));
-		// collisionLayer.add(new LandscapeCollidableRectangle(0, height - s, width, s));
-		// collisionLayer.add(new LandscapeCollidableRectangle(0, 0, s, height));
-		// collisionLayer.add(new LandscapeCollidableRectangle(width - s, 0, s, height));
-		// }
 		//
 		// if (levelId == 0) {
 		// this.width = 2000;
@@ -182,17 +165,45 @@ public class Level {
 		this.height = height;
 	}
 
-	public List<AbstractLevelElement> getLivingEntitiesLayer() {
+	@XmlJavaTypeAdapter(AbstractEntityListAdapter.class)
+	@XmlElement(name = "entityList")
+	public List<AbstractEntity> getLivingEntitiesLayer() {
 		return livingEntitiesLayer;
 	}
 
+	public void setLivingEntitiesLayer(List<AbstractEntity> livingEntitiesLayer) {
+		this.livingEntitiesLayer = livingEntitiesLayer;
+	}
+
+	// TODO
+	// @XmlJavaTypeAdapter(AbstractLandscapeCollidableListAdapter.class)
+	// @XmlElement(name = "interactionsList")
 	public List<AbstractLevelElement> getInteractiveLayer() {
 		return interactiveLayer;
 	}
 
-	@XmlJavaTypeAdapter(LandscapeCollidableEllipseListAdapter.class)
-	@XmlElement(name = "toto")
-	public List<LandscapeCollidableEllipse> getCollisionLayer() {
+	public void setInteractiveLayer(List<AbstractLevelElement> interactiveLayer) {
+		this.interactiveLayer = interactiveLayer;
+	}
+
+	@XmlJavaTypeAdapter(AbstractLandscapeCollidableListAdapter.class)
+	@XmlElement(name = "collidablesList")
+	public List<AbstractLandscapeCollidable> getCollisionLayer() {
 		return collisionLayer;
 	}
+
+	public void setCollisionLayer(List<AbstractLandscapeCollidable> collisionLayer) {
+		this.collisionLayer = collisionLayer;
+	}
+
+	@XmlJavaTypeAdapter(BackgroundListAdapter.class)
+	@XmlElement(name = "backgroundList")
+	public List<Background> getBackgroundLayer() {
+		return backgroundLayer;
+	}
+
+	public void setBackgroundLayer(List<Background> backgroundLayer) {
+		this.backgroundLayer = backgroundLayer;
+	}
+
 }

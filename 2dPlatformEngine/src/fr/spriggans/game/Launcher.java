@@ -12,5 +12,12 @@ public class Launcher {
 		final MainComponent g = new MainComponent();
 		g.init(WIDTH, HEIGHT);
 		g.start();
+
+		try {
+			g.join();
+		} catch (final InterruptedException e) {
+			System.exit(0);
+		}
+
 	}
 }

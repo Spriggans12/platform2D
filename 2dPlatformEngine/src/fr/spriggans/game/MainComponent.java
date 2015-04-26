@@ -15,7 +15,6 @@ import fr.spriggans.gfx.Screen;
 public class MainComponent extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
 
-	private boolean running = false;
 	private Screen screen;
 	private BufferedImage img;
 	private int pixels[];
@@ -50,9 +49,6 @@ public class MainComponent extends Canvas implements Runnable {
 	}
 
 	public void start() {
-		if (running)
-			return;
-		running = true;
 		thread = new Thread(this);
 		thread.start();
 	}
@@ -65,7 +61,7 @@ public class MainComponent extends Canvas implements Runnable {
 		int fps = 0;
 		double delta = 0;
 		long lastTime = System.nanoTime();
-		while (running) {
+		while (true) {
 			final long now = System.nanoTime();
 			long elapsedTime = now - lastTime;
 			lastTime = now;
@@ -96,19 +92,18 @@ public class MainComponent extends Canvas implements Runnable {
 				} catch (final InterruptedException e) {
 					e.printStackTrace();
 				}
+			if (Thread.interrupted())
+				return;
 		}
-		stop();
 	}
 
-	private void stop() {
-		if (!running)
-			return;
-		running = false;
-		try {
-			thread.join();
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
-		}
+	public void stop() {
+		frame.dispose();
+		thread.interrupt();
+	}
+
+	public void join() throws InterruptedException {
+		thread.join();
 	}
 
 	private void tick() {
@@ -130,4 +125,5 @@ public class MainComponent extends Canvas implements Runnable {
 		g.dispose();
 		bs.show();
 	}
+
 }

@@ -65,9 +65,10 @@ public class AbstractEntity extends AbstractLevelElement {
 	/** Objets collidables proches de l'entité. Seuls ces objets là seront testés pour les collisions pour éviter d'itérer sur tout. */
 	List<AbstractLandscapeCollidable> collidablesInVicinity = new ArrayList<AbstractLandscapeCollidable>();
 
-	public AbstractEntity(int x, int y, Level level, int eWidth, int eHeight) {
+	// TODO : Set level.
+
+	public AbstractEntity(int x, int y, int eWidth, int eHeight) {
 		super(x, y);
-		this.level = level;
 		this.entityWidth = eWidth;
 		this.entityHeight = eHeight;
 	}
@@ -317,6 +318,10 @@ public class AbstractEntity extends AbstractLevelElement {
 			}
 
 		// animation.render(screen, (int) x, (int) y);
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
 	}
 
 }

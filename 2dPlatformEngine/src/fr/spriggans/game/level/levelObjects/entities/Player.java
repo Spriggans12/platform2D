@@ -4,19 +4,18 @@ import java.awt.Point;
 
 import fr.spriggans.game.Inputs;
 import fr.spriggans.game.Launcher;
-import fr.spriggans.game.level.Level;
 import fr.spriggans.game.level.levelObjects.landscape.AbstractLandscapeCollidable;
 import fr.spriggans.gfx.Screen;
 
 public class Player extends AbstractEntity {
-	Inputs inputs;
+	private Inputs inputs;
 
 	// TODO : TMP for test...
 	private static final int PL_W = 20;
 	private static final int PL_H = 40;
 
-	public Player(int x, int y, Level level, Inputs input) {
-		super(x, y, level, PL_W, PL_H);
+	public Player(int x, int y) {
+		super(x, y, PL_W, PL_H);
 
 		collisionsPoints = new Point[] { new Point(4, 0), new Point(14, 0), new Point(4, 39), new Point(14, 39), new Point(0, 9), new Point(
 				0, 29), new Point(19, 9), new Point(19, 29) };
@@ -39,7 +38,7 @@ public class Player extends AbstractEntity {
 		// TODO : Change it
 		// animation = Animation.TEST_ANIM_IDDLE;
 
-		this.inputs = input;
+		// this.inputs = input;
 	}
 
 	@Override
@@ -112,5 +111,9 @@ public class Player extends AbstractEntity {
 		if (Launcher.DEBUG_SHOW_COLLISION_BOUNDING_BOX)
 			for (final Point p : collisionsPoints)
 				screen.renderPixel(0xFFFF0000, x + p.x, y + p.y);
+	}
+
+	public void setInputs(Inputs inputs) {
+		this.inputs = inputs;
 	}
 }
