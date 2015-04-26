@@ -42,46 +42,6 @@ public class Level {
 
 	public Level() {
 		System.out.println("jaxb lvl created");
-
-		//
-		// if (levelId == 0) {
-		// this.width = 2000;
-		// this.height = 1100;
-		//
-		// livingEntitiesLayer.add(new Player(200, 200, this, inputs));
-		//
-		// // backgroundLayer.add(new Background(0, 0));
-		//
-		// collisionLayer.add(new LandscapeCollidableRectangle(130, height - 150, 200, 30));
-		// collisionLayer.add(new LandscapeCollidableRectangle(30, height - 70, 30, 30));
-		// collisionLayer.add(new LandscapeCollidableRectangle(80, height - 120, 30, 30));
-		// collisionLayer.add(new LandscapeCollidableRectangle(350, height - 320, 30, 250));
-		// collisionLayer.add(new LandscapeCollidableRectangle(450, height - 90, 40, 3));
-		// collisionLayer.add(new LandscapeCollidableRectangle(350, height - 100, 100, 30));
-		//
-		// collisionLayer.add(new LandscapeCollidableRectangle(250, height - 240, 100, 30));
-		// collisionLayer.add(new LandscapeCollidableRectangle(50, height - 240, 100, 30));
-		//
-		// collisionLayer.add(new LandscapeCollidableEllipse(120, height - 520, 3000, 300));
-		//
-		// // Escaliers
-		// for (int i = 0; i < 20; i++)
-		// collisionLayer.add(new LandscapeCollidableRectangle(450 + i * 30, height - 30 - i * 10, 50, 30));
-		// for (int i = 0; i < 20; i++)
-		// collisionLayer.add(new LandscapeCollidableRectangle(350 + i * 30, height - 320 - 3 * i, 50, 30));
-		// for (int i = 0; i < 20; i++)
-		// collisionLayer.add(new LandscapeCollidableRectangle(350 + 20 * 30 + i * 30, height - 320 - 3 * 20 + 3 * i, 50, 30));
-		//
-		// for (int i = 0; i < 20; i++)
-		// collisionLayer.add(new LandscapeCollidableRectangle(width - 150 - i * 30, i, 50, 30));
-		//
-		// final int s = 30;
-		// collisionLayer.add(new LandscapeCollidableRectangle(0, 0, width, s));
-		// collisionLayer.add(new LandscapeCollidableRectangle(0, height - s, width, s));
-		// collisionLayer.add(new LandscapeCollidableRectangle(0, 0, s, height));
-		// collisionLayer.add(new LandscapeCollidableRectangle(width - s, 0, s, height));
-		// }
-
 	}
 
 	public void tick() {
@@ -166,7 +126,7 @@ public class Level {
 	}
 
 	@XmlJavaTypeAdapter(AbstractEntityListAdapter.class)
-	@XmlElement(name = "entityList")
+	@XmlElement(name = "entities")
 	public List<AbstractEntity> getLivingEntitiesLayer() {
 		return livingEntitiesLayer;
 	}
@@ -187,7 +147,7 @@ public class Level {
 	}
 
 	@XmlJavaTypeAdapter(AbstractLandscapeCollidableListAdapter.class)
-	@XmlElement(name = "collidablesList")
+	@XmlElement(name = "collidables")
 	public List<AbstractLandscapeCollidable> getCollisionLayer() {
 		return collisionLayer;
 	}
@@ -197,7 +157,7 @@ public class Level {
 	}
 
 	@XmlJavaTypeAdapter(BackgroundListAdapter.class)
-	@XmlElement(name = "backgroundList")
+	@XmlElement(name = "backgrounds")
 	public List<Background> getBackgroundLayer() {
 		return backgroundLayer;
 	}

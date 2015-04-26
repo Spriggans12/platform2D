@@ -25,10 +25,6 @@ public class LandscapeCollidableRectangle extends AbstractLandscapeCollidable {
 		super(x0, y0);
 		this.dh = deltaH;
 		this.initialHeight = h;
-
-		System.out.println(h);
-		System.out.println(deltaH);
-
 		geometry = new GeneralPath(GeneralPath.WIND_EVEN_ODD, 4);
 		geometry.moveTo(x0, y0);
 		geometry.lineTo(x0 + w, y0 + deltaH);
@@ -38,7 +34,6 @@ public class LandscapeCollidableRectangle extends AbstractLandscapeCollidable {
 		color = 0xff888800;
 		initBoundingBox();
 		isSkewed = true;
-		System.out.println("=> " + boundingBox.height);
 	}
 
 	@Override

@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <level width="1000" height="500">
-	
-	
-	<collidablesList>
+
+	<collidables>
 		<!-- Bords de la map -->
-		<rectangle xNW="0" yNW="0" totalW="1000" totalH="30"/>
-		<rectangle xNW="0" yNW="470" totalW="1000" totalH="30"/>
-		<rectangle xNW="0" yNW="0" totalW="30" totalH="500"/>
-		<rectangle xNW="970" yNW="0" totalW="30" totalH="500"/>
+		<rectangle x="0" y="0" w="1000" h="30"/>
+		<rectangle x="0" y="470" w="1000" h="30"/>
+		<rectangle x="0" y="0" w="30" h="500"/>
+		<rectangle x="970" y="0" w="30" h="500"/>
 		
-		<rectangle xNW="0" yNW="350" totalW="1000" totalH="30" skewed="true" deltaH="100"/>
-	</collidablesList>
+		<rectangle x="0" y="350" w="1000" h="30" skewed="true" deltaH="100"/>
+	</collidables>
 	
-	<entityList>
+	<entities>
 		<player x="200" y="100"/>
-	</entityList>
+	</entities>
 </level>

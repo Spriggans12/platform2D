@@ -21,15 +21,13 @@ public class Game {
 		try {
 			currentLevelIndex = 0;
 
-			// Unmarshalling of the level.
 			final JAXBContext jabxbContext = JAXBContext.newInstance(Level.class);
 			final Unmarshaller unmarshaller = jabxbContext.createUnmarshaller();
 			final Level lvl = (Level) unmarshaller.unmarshal(new File("res/levels/level.xml"));
-
 			// Ajout de l'attribut level pour les entités.
 			for (final AbstractEntity entity : lvl.getLivingEntitiesLayer()) {
 				entity.setLevel(lvl);
-				// Ajout des inputs sur le player.
+				// Ajout des inputs pour le player.
 				if (entity instanceof Player)
 					((Player) entity).setInputs(inputs);
 			}
@@ -38,7 +36,6 @@ public class Game {
 			screen.calibrateScreenToLevel(levelList.get(currentLevelIndex).getWidth(), levelList.get(currentLevelIndex).getHeight());
 		} catch (final JAXBException e) {
 			e.printStackTrace();
-			System.err.println("Error unmarshalling xml file.");
 		}
 	}
 
