@@ -5,8 +5,9 @@ public class Screen {
 	public static final int MIRROR_HORIZONTAL = 1;
 	public static final int MIRROR_VERTICAL = 2;
 
-	/** Lorsque le player arrive a cette distance du bord de la map, la view se decale. TODO : Comportement a changer lorsque la classe Camera arrivera. TODO : Ajouter un sliderDistance vertical et
-	 * horinzontal. */
+	/** Lorsque le player arrive a cette distance du bord de la map, la view se decale.<br/>
+	 * TODO : Comportement a changer lorsque la classe Camera arrivera.<br/>
+	 * TODO : Ajouter un sliderDistance vertical et horinzontal. */
 	public int screenSlideDistance = 200;
 
 	private int width;
@@ -25,7 +26,6 @@ public class Screen {
 		width = w;
 		height = h;
 		pixels = new int[width * height];
-
 		screenSlideDistance = (Math.min(w, h)) / 2;
 	}
 
@@ -123,10 +123,8 @@ public class Screen {
 		}
 		int numerator = longest >> 1;
 		for (int i = 0; i <= longest; i++) {
-
-			if (isOutsideScreen(x, y, 0, 0))
-				return;
-			pixels[y * width + x] = color;
+			if (!isOutsideScreen(x, y, 0, 0))
+				pixels[y * width + x] = color;
 
 			numerator += shortest;
 			if (!(numerator < longest)) {
@@ -138,6 +136,11 @@ public class Screen {
 				y += dy2;
 			}
 		}
+	}
+
+	/** @param character est une seule lettre. */
+	public void renderCharacter(int x, int y, String character, int col) {
+		Characters.renderCharacter(this, x, y, character, col);
 	}
 
 	public void renderSquare(int x, int y, int size, int col) {
@@ -154,29 +157,56 @@ public class Screen {
 		pixels[yPxl * width + xPxl] = p;
 	}
 
+	/** Les offsets doivent déjà avoir été fait. */
+	public void renderPixelNoOffset(int p, int x, int y) {
+		if (p == 0x00000000)
+			return;
+		if (isOutsideScreen(x, y, 0, 0))
+			return;
+		pixels[y * width + x] = p;
+	}
+
 	/** x,y coin NW. */
 	public void renderPixels(int[] pxls, int w, int h, int x, int y, int mirrorBits) {
-		if (isOutsideScreen(x - xOffs, y - yOffs, w, h))
+		x -= xOffs;
+		y -= yOffs;
+		if (isOutsideScreen(x, y, w, h))
 			return;
 		if ((mirrorBits & MIRROR_HORIZONTAL) == MIRROR_HORIZONTAL) {
 			if ((mirrorBits & MIRROR_VERTICAL) == MIRROR_VERTICAL)
 				for (int j = 0; j < h; j++)
 					for (int i = 0; i < w; i++)
-						renderPixel(pxls[j * w + i], x + w - i, y + h - j);
+						renderPixelNoOffset(pxls[j * w + i], x + w - i, y + h - j);
 			else
 				for (int j = 0; j < h; j++)
 					for (int i = 0; i < w; i++)
-						renderPixel(pxls[j * w + i], x + w - i, y + j);
+						renderPixelNoOffset(pxls[j * w + i], x + w - i, y + j);
 			return;
 		} else if ((mirrorBits & MIRROR_VERTICAL) == MIRROR_VERTICAL) {
 			for (int j = 0; j < h; j++)
 				for (int i = 0; i < w; i++)
-					renderPixel(pxls[j * w + i], x + i, y + h - j);
+					renderPixelNoOffset(pxls[j * w + i], x + i, y + h - j);
 			return;
 		}
 		for (int j = 0; j < h; j++)
 			for (int i = 0; i < w; i++)
-				renderPixel(pxls[j * w + i], x + i, y + j);
+				renderPixelNoOffset(pxls[j * w + i], x + i, y + j);
+	}
+
+	public void renderPixelsUnicolor(int[] pxls, int w, int h, int x, int y, int color) {
+		x -= xOffs;
+		y -= yOffs;
+		if (isOutsideScreen(x, y, w, h))
+			return;
+		for (int j = 0; j < h; j++)
+			for (int i = 0; i < w; i++) {
+				int p = pxls[j * w + i];
+				if (p == 0x00000000)
+					continue;
+				else
+					p = color;
+				renderPixelNoOffset(p, x + i, y + j);
+			}
 	}
 
 	public void renderEllipse(int xNW, int yNW, int totalW, int totalH, int col) {
@@ -244,4 +274,5 @@ public class Screen {
 		this.xOffs = xOffs;
 		this.yOffs = yOffs;
 	}
+
 }

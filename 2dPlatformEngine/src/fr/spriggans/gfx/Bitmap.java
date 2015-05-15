@@ -13,6 +13,8 @@ public class Bitmap {
 	public static final Bitmap GASPARD = new Bitmap(0, "res/bitmaps/gaspard.png", 0, 0);
 	public static final Bitmap BG_TEST = new Bitmap(1, "res/bitmaps/bg_test.jpg", 0, 0);
 
+	public static final Bitmap CHARACTER_SET = new Bitmap(2, "res/bitmaps/curses_640x300.png", 0, 0);
+
 	private int id;
 	/** Si l'objet est en x0, on commence a dessiner le bitmap a x0 - xCenter */
 	private int xCenter;

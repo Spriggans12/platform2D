@@ -1,0 +1,19 @@
+on peut ajouter des commentaires si on ne met pas le caractère [ en premier.
+[ENTITY:PLAYER]
+width then height
+[DIMENSIONS:20:40]
+[COLLISIONS_POINTS:4:0:14:0:4:39:14:39:0:9:0:29:19:9:19:29]
+x then y
+[MAX_SPEEDS:5:10]
+[GROUND_FRICTION:1]
+[GROUND_ACCELERATION:0.6]
+[GROUND_JUMP_SPEED:8]
+[GRAVITY_STRENGTH:0.36]
+
+TODO : Ajouter la gestion des espaces en dehors des [ ]
+
+
+[ENTITY:MONSTER]
+[b:5]
+
+[ENTITY:BOSS]
