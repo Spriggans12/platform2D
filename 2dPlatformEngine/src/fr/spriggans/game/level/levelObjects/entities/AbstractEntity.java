@@ -26,15 +26,15 @@ public class AbstractEntity extends AbstractLevelElement {
 	/** gravity/f */
 	protected float gravityStrength = 0;
 	/** friction/f */
-	protected int groundFriction = 0;
+	protected float groundFriction = 0;
 	/** Accélération au sol/f. */
-	protected int groundAcceleration = 1;
+	protected float groundAcceleration = 1;
 	/** Jump speed. */
-	protected int groundJumpSpeed = 0;
+	protected float groundJumpSpeed = 0;
 	/** Maximum horizontal velocity. */
-	protected int maxSpeedX = 4;
+	protected float maxSpeedX = 4;
 	/** Maximum vertical velocity. */
-	protected int maxSpeedY = 4;
+	protected float maxSpeedY = 4;
 	/** Is the entity jumping ? */
 	protected boolean jumping = false;
 
@@ -67,10 +67,10 @@ public class AbstractEntity extends AbstractLevelElement {
 
 	// TODO : Set level.
 
-	public AbstractEntity(int x, int y, int eWidth, int eHeight) {
+	public AbstractEntity(int x, int y, EntityAttributes entityAttributes) {
 		super(x, y);
-		this.entityWidth = eWidth;
-		this.entityHeight = eHeight;
+		entityAttributes.initaliseEntityAttributes(this);
+		initGeometryFromCollisionPoints();
 	}
 
 	protected void initGeometryFromCollisionPoints() {
@@ -322,6 +322,46 @@ public class AbstractEntity extends AbstractLevelElement {
 
 	public void setLevel(Level level) {
 		this.level = level;
+	}
+
+	public void setCollisionsPoints(Point collisionsPoints[]) {
+		this.collisionsPoints = collisionsPoints;
+	}
+
+	public void setEntityWidth(int entityWidth) {
+		this.entityWidth = entityWidth;
+	}
+
+	public void setEntityHeight(int entityHeight) {
+		this.entityHeight = entityHeight;
+	}
+
+	public void setGravityStrength(float gravityStrength) {
+		this.gravityStrength = gravityStrength;
+	}
+
+	public void setGroundFriction(float groundFriction) {
+		this.groundFriction = groundFriction;
+	}
+
+	public void setGroundAcceleration(float groundAcceleration) {
+		this.groundAcceleration = groundAcceleration;
+	}
+
+	public void setGroundJumpSpeed(float groundJumpSpeed) {
+		this.groundJumpSpeed = groundJumpSpeed;
+	}
+
+	public void setMaxSpeedX(float maxSpeedX) {
+		this.maxSpeedX = maxSpeedX;
+	}
+
+	public void setMaxSpeedY(float maxSpeedY) {
+		this.maxSpeedY = maxSpeedY;
+	}
+
+	public Point[] getCollisionsPoints() {
+		return collisionsPoints;
 	}
 
 }

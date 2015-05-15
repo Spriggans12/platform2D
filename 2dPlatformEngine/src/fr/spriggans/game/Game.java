@@ -17,7 +17,7 @@ public class Game {
 	private final List<Level> levelList = new ArrayList<Level>();
 	private int currentLevelIndex;
 
-	public Game(Inputs inputs, Screen screen) {
+	public Game(KeyboardInput keyboard, Screen screen) {
 		try {
 			currentLevelIndex = 0;
 
@@ -27,9 +27,9 @@ public class Game {
 			// Ajout de l'attribut level pour les entités.
 			for (final AbstractEntity entity : lvl.getLivingEntitiesLayer()) {
 				entity.setLevel(lvl);
-				// Ajout des inputs pour le player.
+				// Ajout des inputs du clavier pour le player.
 				if (entity instanceof Player)
-					((Player) entity).setInputs(inputs);
+					((Player) entity).setKeyboardInput(keyboard);
 			}
 			levelList.add(lvl);
 

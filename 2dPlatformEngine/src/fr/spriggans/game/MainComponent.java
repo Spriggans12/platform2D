@@ -20,7 +20,7 @@ public class MainComponent extends Canvas implements Runnable {
 	private int pixels[];
 	private Thread thread;
 	private JFrame frame;
-	private Inputs inputs;
+	private KeyboardInput keyboard;
 	private Game game;
 
 	private final boolean fullScreen = false;
@@ -42,8 +42,8 @@ public class MainComponent extends Canvas implements Runnable {
 		frame.setVisible(true);
 
 		screen = new Screen(w, h);
-		inputs = new Inputs(this);
-		game = new Game(inputs, screen);
+		keyboard = new KeyboardInput(this);
+		game = new Game(keyboard, screen);
 		img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
 	}

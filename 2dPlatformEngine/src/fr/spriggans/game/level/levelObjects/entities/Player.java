@@ -1,50 +1,29 @@
 package fr.spriggans.game.level.levelObjects.entities;
 
 import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.io.File;
 
-import fr.spriggans.game.Inputs;
+import fr.spriggans.game.KeyboardInput;
 import fr.spriggans.game.Launcher;
 import fr.spriggans.game.level.levelObjects.landscape.AbstractLandscapeCollidable;
 import fr.spriggans.gfx.Screen;
 
 public class Player extends AbstractEntity {
-	private Inputs inputs;
-
-	// TODO : TMP for test...
-	private static final int PL_W = 20;
-	private static final int PL_H = 40;
+	private KeyboardInput keyboard;
 
 	public Player(int x, int y) {
-		super(x, y, PL_W, PL_H);
-
-		collisionsPoints = new Point[] { new Point(4, 0), new Point(14, 0), new Point(4, 39), new Point(14, 39), new Point(0, 9), new Point(
-				0, 29), new Point(19, 9), new Point(19, 29) };
-
-		// collisionsPoints = new Point[] { new Point(5, 0), new Point(15, 0), new Point(5, 40), new Point(15, 40), new Point(0, 10), new Point(
-		// 0, 30), new Point(20, 10), new Point(20, 30) };
-
-		initGeometryFromCollisionPoints();
-
-		final float S = 0.2f;
-		// TODO : les placer dans le constructeur d'entités.
-
-		this.groundFriction = (int) (30 * S);
-		this.groundAcceleration = (int) (10 * S);
-		this.gravityStrength = (1 * S);
-		this.groundJumpSpeed = (int) (100 * S);
-		this.maxSpeedX = (int) (50 * S);
-		this.maxSpeedY = (int) (100 * S);
-
-		// TODO : Change it
-		// animation = Animation.TEST_ANIM_IDDLE;
-
-		// this.inputs = input;
+		super(x, y, EntityAttributes.att_player);
 	}
 
 	@Override
 	protected boolean applyInputs() {
 		boolean horizontalMovement = false;
-		if (inputs.left.isPressed()) {
+
+		keyboard.poll();
+
+		if (keyboard.keyDown(KeyEvent.VK_LEFT)
+				|| keyboard.keyDown(KeyEvent.VK_Q)) {
 			speedX -= groundAcceleration;
 			horizontalMovement = true;
 			// if (animation.equals(Animation.TEST_ANIM_IDDLE)) {
@@ -52,7 +31,8 @@ public class Player extends AbstractEntity {
 			// animation = Animation.TEST_ANIM_WALK;
 			// }
 		}
-		if (inputs.right.isPressed()) {
+		if (keyboard.keyDown(KeyEvent.VK_RIGHT)
+				|| keyboard.keyDown(KeyEvent.VK_D)) {
 			speedX += groundAcceleration;
 			horizontalMovement = true;
 			// if (animation.equals(Animation.TEST_ANIM_IDDLE)) {
@@ -60,13 +40,17 @@ public class Player extends AbstractEntity {
 			// animation = Animation.TEST_ANIM_WALK;
 			// }
 		}
-		if ((inputs.up.isPressed()) && !jumping) {
+		if ((keyboard.keyDown(KeyEvent.VK_UP) || keyboard
+				.keyDown(KeyEvent.VK_Z)) && !jumping) {
 			jumping = true;
 			speedY -= groundJumpSpeed;
 		}
 
 		// Fin de l'annimaition de marche.
-		if (!inputs.left.isPressed() && !inputs.right.isPressed()) {
+		if (!(keyboard.keyDown(KeyEvent.VK_LEFT) || keyboard
+				.keyDown(KeyEvent.VK_Q))
+				&& !(keyboard.keyDown(KeyEvent.VK_RIGHT) || keyboard
+						.keyDown(KeyEvent.VK_D))) {
 			// if (animation.equals(Animation.TEST_ANIM_WALK)) {
 			// animation.raz();
 			// animation = Animation.TEST_ANIM_IDDLE;
@@ -104,16 +88,18 @@ public class Player extends AbstractEntity {
 			}
 		if (Launcher.DEBUG_SHOW_ENTITY_SPRITE)
 			;
-		// animation.render(screen, (int) x, (int) y, !isFacingLeft ? Screen.MIRROR_HORIZONTAL : 0);
+		// animation.render(screen, (int) x, (int) y, !isFacingLeft ?
+		// Screen.MIRROR_HORIZONTAL : 0);
 
 		if (Launcher.DEBUG_SHOW_ENTITY_BB)
-			screen.renderRectangle(x, y, entityGeometry.getBounds().width, entityGeometry.getBounds().height, 0xFFFFFF00, true, 1);
+			screen.renderRectangle(x, y, entityGeometry.getBounds().width,
+					entityGeometry.getBounds().height, 0xFFFFFF00, true, 1);
 		if (Launcher.DEBUG_SHOW_COLLISION_BOUNDING_BOX)
 			for (final Point p : collisionsPoints)
 				screen.renderPixel(0xFFFF0000, x + p.x, y + p.y);
 	}
 
-	public void setInputs(Inputs inputs) {
-		this.inputs = inputs;
+	public void setKeyboardInput(KeyboardInput keyboard) {
+		this.keyboard = keyboard;
 	}
 }
