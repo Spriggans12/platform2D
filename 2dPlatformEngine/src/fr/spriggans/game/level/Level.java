@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import fr.spriggans.game.level.chat.IChat;
 import fr.spriggans.game.level.levelObjects.AbstractLevelElement;
 import fr.spriggans.game.level.levelObjects.background.Background;
 import fr.spriggans.game.level.levelObjects.entities.AbstractEntity;
@@ -40,6 +41,9 @@ public class Level {
 	/** Liste contenant les backgrounds du level. */
 	private List<Background> backgroundLayer = new ArrayList<Background>();
 
+	/** Chat du level. Si null, le chat n'est pas actif pour ce level. */
+	private IChat chat;
+	
 	public Level() {
 		System.out.println("jaxb lvl created");
 	}
@@ -50,6 +54,10 @@ public class Level {
 		}
 		for (final AbstractLevelElement interactive : getInteractiveLayer()) {
 			interactive.tick();
+		}
+		if(chat != null) {
+			// TODO utiliser un pseudo.
+			chat.tick("Spriggans");
 		}
 	}
 
@@ -96,6 +104,9 @@ public class Level {
 		}
 		for (final AbstractLevelElement entity : getLivingEntitiesLayer()) {
 			entity.render(screen);
+		}
+		if(chat != null) {
+			chat.render(screen);
 		}
 	}
 
@@ -166,4 +177,7 @@ public class Level {
 		this.backgroundLayer = backgroundLayer;
 	}
 
+	public void setChat(IChat chat) {
+		this.chat = chat;
+	}
 }

@@ -63,13 +63,13 @@ public class Animation {
 		return false;
 	}
 
-	public void render(Screen screen, int x, int y) {
-		render(screen, x, y, 0);
+	public void render(Screen screen, int x, int y, boolean afficherSiInScreenOutLevel) {
+		render(screen, x, y, 0, afficherSiInScreenOutLevel);
 	}
 
-	public void render(Screen screen, int x, int y, int mirrorBits) {
+	public void render(Screen screen, int x, int y, int mirrorBits, boolean afficherSiInScreenOutLevel) {
 		final Frame f = frames.get(idCurrentFrame);
-		screen.renderPixels(f.getPixels(), f.getWidth(), f.getHeight(), x, y, mirrorBits);
+		screen.renderPixels(f.getPixels(), f.getWidth(), f.getHeight(), x, y, mirrorBits, afficherSiInScreenOutLevel);
 	}
 
 	public void raz() {

@@ -2,7 +2,6 @@ package fr.spriggans.game.level.levelObjects.entities;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
 import fr.spriggans.game.KeyboardInput;
 import fr.spriggans.game.Launcher;
@@ -96,10 +95,14 @@ public class Player extends AbstractEntity {
 					entityGeometry.getBounds().height, 0xFFFFFF00, true, 1);
 		if (Launcher.DEBUG_SHOW_COLLISION_BOUNDING_BOX)
 			for (final Point p : collisionsPoints)
-				screen.renderPixel(0xFFFF0000, x + p.x, y + p.y);
+				screen.renderPixel(0xFFFF0000, x + p.x, y + p.y, false);
 	}
 
 	public void setKeyboardInput(KeyboardInput keyboard) {
 		this.keyboard = keyboard;
+	}
+	
+	public KeyboardInput getKeyboardInput() {
+		return keyboard;
 	}
 }

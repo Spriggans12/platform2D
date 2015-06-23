@@ -65,7 +65,7 @@ public class Screen {
 		}
 	}
 
-	public void renderParallelogram(int x, int y, int w, int h, int dh, int col) {
+	public void renderParallelogram(int x, int y, int w, int h, int dh, int col, boolean afficherSiInScreenOutLevel) {
 		x -= xOffs;
 		y -= yOffs;
 
@@ -88,13 +88,13 @@ public class Screen {
 		}
 
 		// On render les traits diagonaux
-		line(x, y, x + w, y + dh, col);
-		line(x, y + h, x + w, y + dh + h, col);
+		line(x, y, x + w, y + dh, col, afficherSiInScreenOutLevel);
+		line(x, y + h, x + w, y + dh + h, col, afficherSiInScreenOutLevel);
 
 	}
 
 	/** Attention : il faut que x et y aient déjà comptés les offsets. */
-	private void line(int x, int y, int x2, int y2, int color) {
+	private void line(int x, int y, int x2, int y2, int color, boolean afficherSiInScreenOutLevel) {
 		final int w = x2 - x;
 		final int h = y2 - y;
 		int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
@@ -123,7 +123,7 @@ public class Screen {
 		}
 		int numerator = longest >> 1;
 		for (int i = 0; i <= longest; i++) {
-			if (!isOutsideScreen(x, y, 0, 0))
+			if (!isOutsideLevel(x, y, 0, 0, afficherSiInScreenOutLevel))
 				pixels[y * width + x] = color;
 
 			numerator += shortest;
@@ -137,66 +137,86 @@ public class Screen {
 			}
 		}
 	}
-
-	/** @param character est une seule lettre. */
-	public void renderCharacter(int x, int y, String character, int col) {
+	
+	
+	/** Les offsets ont déjà été appliqués.
+	 *  @param letterSize = pxls entre deux débuts de lettre. 
+	 *  @return x du mot suivant (avec espace compté). */
+	public int renderWord(int x, int y, String word, int col, int letterSize, int spaceSize) {
+		int size = word.length();
+		for(int i = 0; i < size; i++) {
+			if(renderCharacter(x, y, String.valueOf(word.charAt(i)), col))
+				x += letterSize;
+			else
+				x += spaceSize;
+		}
+		return x + spaceSize;
+	}
+	
+	/** Les offsets ont déjà été appliqués.
+	 * @param character est une seule lettre. 
+	 * @return false si la lettre est un espace : " ". */
+	public boolean renderCharacter(int x, int y, String character, int col) {
+		if(" ".equals(character))
+			return false;
 		Characters.renderCharacter(this, x, y, character, col);
+		return true;
 	}
 
 	public void renderSquare(int x, int y, int size, int col) {
 		renderRectangle(x, y, size, size, col);
 	}
 
-	public void renderPixel(int p, int x, int y) {
+	public void renderPixel(int p, int x, int y, boolean afficherSiInScreenOutLevel) {
 		if (p == 0x00000000)
 			return;
 		final int xPxl = x - xOffs;
 		final int yPxl = y - yOffs;
-		if (isOutsideScreen(xPxl, yPxl, 0, 0))
+		if (isOutsideLevel(xPxl, yPxl, 0, 0, afficherSiInScreenOutLevel))
 			return;
 		pixels[yPxl * width + xPxl] = p;
 	}
 
 	/** Les offsets doivent déjà avoir été fait. */
-	public void renderPixelNoOffset(int p, int x, int y) {
+	public void renderPixelNoOffset(int p, int x, int y, boolean afficherSiInScreenOutLevel) {
 		if (p == 0x00000000)
 			return;
-		if (isOutsideScreen(x, y, 0, 0))
+		if (isOutsideLevel(x, y, 0, 0, afficherSiInScreenOutLevel))
 			return;
 		pixels[y * width + x] = p;
 	}
 
 	/** x,y coin NW. */
-	public void renderPixels(int[] pxls, int w, int h, int x, int y, int mirrorBits) {
+	public void renderPixels(int[] pxls, int w, int h, int x, int y, int mirrorBits, boolean afficherSiInScreenOutLevel) {
 		x -= xOffs;
 		y -= yOffs;
-		if (isOutsideScreen(x, y, w, h))
+		if (isOutsideLevel(x, y, w, h, afficherSiInScreenOutLevel))
 			return;
 		if ((mirrorBits & MIRROR_HORIZONTAL) == MIRROR_HORIZONTAL) {
 			if ((mirrorBits & MIRROR_VERTICAL) == MIRROR_VERTICAL)
 				for (int j = 0; j < h; j++)
 					for (int i = 0; i < w; i++)
-						renderPixelNoOffset(pxls[j * w + i], x + w - i, y + h - j);
+						renderPixelNoOffset(pxls[j * w + i], x + w - i, y + h - j, afficherSiInScreenOutLevel);
 			else
 				for (int j = 0; j < h; j++)
 					for (int i = 0; i < w; i++)
-						renderPixelNoOffset(pxls[j * w + i], x + w - i, y + j);
+						renderPixelNoOffset(pxls[j * w + i], x + w - i, y + j, afficherSiInScreenOutLevel);
 			return;
 		} else if ((mirrorBits & MIRROR_VERTICAL) == MIRROR_VERTICAL) {
 			for (int j = 0; j < h; j++)
 				for (int i = 0; i < w; i++)
-					renderPixelNoOffset(pxls[j * w + i], x + i, y + h - j);
+					renderPixelNoOffset(pxls[j * w + i], x + i, y + h - j, afficherSiInScreenOutLevel);
 			return;
 		}
 		for (int j = 0; j < h; j++)
 			for (int i = 0; i < w; i++)
-				renderPixelNoOffset(pxls[j * w + i], x + i, y + j);
+				renderPixelNoOffset(pxls[j * w + i], x + i, y + j, afficherSiInScreenOutLevel);
 	}
 
-	public void renderPixelsUnicolor(int[] pxls, int w, int h, int x, int y, int color) {
+	public void renderPixelsUnicolor(int[] pxls, int w, int h, int x, int y, int color, boolean afficherSiInScreenOutLevel) {
 		x -= xOffs;
 		y -= yOffs;
-		if (isOutsideScreen(x, y, w, h))
+		if (isOutsideLevel(x, y, w, h, afficherSiInScreenOutLevel))
 			return;
 		for (int j = 0; j < h; j++)
 			for (int i = 0; i < w; i++) {
@@ -205,7 +225,7 @@ public class Screen {
 					continue;
 				else
 					p = color;
-				renderPixelNoOffset(p, x + i, y + j);
+				renderPixelNoOffset(p, x + i, y + j, afficherSiInScreenOutLevel);
 			}
 	}
 
@@ -237,7 +257,10 @@ public class Screen {
 
 	}
 
-	public boolean isOutsideScreen(int x, int y, int w, int h) {
+	/** @param outsideScreenInstead si Vrai, on checke si le pixel est dans le Screen, pas dans le level. */
+	public boolean isOutsideLevel(int x, int y, int w, int h, boolean outsideScreenInstead) {
+		if(outsideScreenInstead)
+			return x + w < 0 || x >= width || y + h < 0 || y >= height;	
 		return x + w < compWidth1 || x >= compWidth2 || y + h < compHeight1 || y >= compHeight2;
 	}
 

@@ -51,13 +51,13 @@ public class Bitmap {
 	}
 
 	/** Render no mirroring. */
-	public void render(Screen screen, int x, int y) {
-		render(screen, x, y, 0);
+	public void render(Screen screen, int x, int y, boolean afficherSiInScreenOutLevel) {
+		render(screen, x, y, 0, afficherSiInScreenOutLevel);
 	}
 
 	/** Render. Bits de mirrorBits stockés dans Screen. */
-	public void render(Screen screen, int x, int y, int mirrorBits) {
-		screen.renderPixels(pixels, width, height, x - xCenter, y - yCenter, mirrorBits);
+	public void render(Screen screen, int x, int y, int mirrorBits, boolean afficherSiInScreenOutLevel) {
+		screen.renderPixels(pixels, width, height, x - xCenter, y - yCenter, mirrorBits, afficherSiInScreenOutLevel);
 	}
 
 	public int getId() {

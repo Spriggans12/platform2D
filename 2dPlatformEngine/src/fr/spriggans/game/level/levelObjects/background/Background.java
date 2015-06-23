@@ -12,6 +12,6 @@ public class Background extends AbstractLevelElement {
 
 	@Override
 	public void render(Screen screen) {
-		Bitmap.BG_TEST.render(screen, (int) x, (int) y, 0);
+		Bitmap.BG_TEST.render(screen, (int) x, (int) y, 0, false);
 	}
 }

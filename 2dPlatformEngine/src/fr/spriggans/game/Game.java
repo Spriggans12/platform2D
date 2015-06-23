@@ -9,6 +9,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import fr.spriggans.game.level.Level;
+import fr.spriggans.game.level.chat.Chat;
 import fr.spriggans.game.level.levelObjects.entities.AbstractEntity;
 import fr.spriggans.game.level.levelObjects.entities.Player;
 import fr.spriggans.gfx.Screen;
@@ -24,6 +25,10 @@ public class Game {
 			final JAXBContext jabxbContext = JAXBContext.newInstance(Level.class);
 			final Unmarshaller unmarshaller = jabxbContext.createUnmarshaller();
 			final Level lvl = (Level) unmarshaller.unmarshal(new File("res/levels/level.xml"));
+			
+			// Et ajout du chat pour le level, TODO : si celui-ci est activé.
+			lvl.setChat(new Chat(keyboard));
+			
 			// Ajout de l'attribut level pour les entités.
 			for (final AbstractEntity entity : lvl.getLivingEntitiesLayer()) {
 				entity.setLevel(lvl);

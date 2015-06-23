@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
+<!--  Ajouter un paramètre dans le constructeur du level pour le chat.  -->
 <level width="1000" height="500">
 
 	<collidables>
@@ -6,7 +8,7 @@
 		<rectangle x="0" y="0" w="1000" h="30"/>
 		<rectangle x="0" y="470" w="1000" h="30"/>
 		<rectangle x="0" y="0" w="30" h="500"/>
-		<rectangle x="970" y="0" w="30" h="500"/>
+		
 		
 		<rectangle x="0" y="350" w="1000" h="30"/>
 		<rectangle x="200" y="300" w="100" h="30"/>

@@ -41,7 +41,7 @@ public class LandscapeCollidableRectangle extends AbstractLandscapeCollidable {
 		if (!isSkewed)
 			screen.renderRectangle(x, y, boundingBox.width, boundingBox.height, color, true, 1);
 		else
-			screen.renderParallelogram(x, y, boundingBox.width, initialHeight, dh, color);
+			screen.renderParallelogram(x, y, boundingBox.width, initialHeight, dh, color, false);
 	}
 
 	public boolean getIsSkewed() {
