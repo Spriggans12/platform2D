@@ -41,22 +41,36 @@ public class Screen {
 
 	/** x,y coin NW. */
 	public void renderRectangle(int x, int y, int w, int h, int col) {
-		renderRectangle(x, y, w, h, col, false, 0);
+		renderRectangle(x, y, w, h, col, false, 0, false);
+	}
+
+	/** x,y coin NW. */
+	public void renderRectangle(int x, int y, int w, int h, int col, boolean afficherSiInScreenOutLevel) {
+		renderRectangle(x, y, w, h, col, false, 0, afficherSiInScreenOutLevel);
 	}
 
 	public void renderRectangle(int x, int y, int w, int h, int col, boolean outlineOnly, int outlineSize) {
+		renderRectangle(x, y, w, h, col, outlineOnly, outlineSize, false);
+	}
+
+	public void renderRectangle(int x, int y, int w, int h, int col, boolean outlineOnly, int outlineSize,
+			boolean afficherSiInScreenOutLevel) {
 		x -= xOffs;
 		y -= yOffs;
+		final int cW1 = afficherSiInScreenOutLevel ? 0 : compWidth1;
+		final int cW2 = afficherSiInScreenOutLevel ? width : compWidth2;
+		final int cH1 = afficherSiInScreenOutLevel ? 0 : compHeight1;
+		final int cH2 = afficherSiInScreenOutLevel ? height : compHeight2;
 		for (int j = 0; j < h; j++) {
 			final int jPixel = j + y;
-			if (jPixel < compHeight1 || jPixel >= compHeight2)
+			if (jPixel < cH1 || jPixel >= cH2)
 				continue;
 			for (int i = 0; i < w; i++) {
 				if (outlineOnly && j > outlineSize - 1 && j < h - outlineSize && i > outlineSize - 1 && i < w - outlineSize) {
 					continue;
 				}
 				final int iPixel = i + x;
-				if (iPixel < compWidth1 || iPixel >= compWidth2)
+				if (iPixel < cW1 || iPixel >= cW2)
 					continue;
 				if (col == 0x00000000)
 					continue;
@@ -137,27 +151,26 @@ public class Screen {
 			}
 		}
 	}
-	
-	
+
 	/** Les offsets ont déjà été appliqués.
-	 *  @param letterSize = pxls entre deux débuts de lettre. 
-	 *  @return x du mot suivant (avec espace compté). */
+	 * @param letterSize = pxls entre deux débuts de lettre.
+	 * @return x du mot suivant (avec espace compté). */
 	public int renderWord(int x, int y, String word, int col, int letterSize, int spaceSize) {
-		int size = word.length();
-		for(int i = 0; i < size; i++) {
-			if(renderCharacter(x, y, String.valueOf(word.charAt(i)), col))
+		final int size = word.length();
+		for (int i = 0; i < size; i++) {
+			if (renderCharacter(x, y, String.valueOf(word.charAt(i)), col))
 				x += letterSize;
 			else
 				x += spaceSize;
 		}
 		return x + spaceSize;
 	}
-	
+
 	/** Les offsets ont déjà été appliqués.
-	 * @param character est une seule lettre. 
+	 * @param character est une seule lettre.
 	 * @return false si la lettre est un espace : " ". */
 	public boolean renderCharacter(int x, int y, String character, int col) {
-		if(" ".equals(character))
+		if (" ".equals(character))
 			return false;
 		Characters.renderCharacter(this, x, y, character, col);
 		return true;
@@ -259,8 +272,8 @@ public class Screen {
 
 	/** @param outsideScreenInstead si Vrai, on checke si le pixel est dans le Screen, pas dans le level. */
 	public boolean isOutsideLevel(int x, int y, int w, int h, boolean outsideScreenInstead) {
-		if(outsideScreenInstead)
-			return x + w < 0 || x >= width || y + h < 0 || y >= height;	
+		if (outsideScreenInstead)
+			return x + w < 0 || x >= width || y + h < 0 || y >= height;
 		return x + w < compWidth1 || x >= compWidth2 || y + h < compHeight1 || y >= compHeight2;
 	}
 

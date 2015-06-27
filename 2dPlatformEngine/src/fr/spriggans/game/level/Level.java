@@ -43,7 +43,7 @@ public class Level {
 
 	/** Chat du level. Si null, le chat n'est pas actif pour ce level. */
 	private IChat chat;
-	
+
 	public Level() {
 		System.out.println("jaxb lvl created");
 	}
@@ -55,7 +55,7 @@ public class Level {
 		for (final AbstractLevelElement interactive : getInteractiveLayer()) {
 			interactive.tick();
 		}
-		if(chat != null) {
+		if (chat != null) {
 			// TODO utiliser un pseudo.
 			chat.tick("Spriggans");
 		}
@@ -105,7 +105,7 @@ public class Level {
 		for (final AbstractLevelElement entity : getLivingEntitiesLayer()) {
 			entity.render(screen);
 		}
-		if(chat != null) {
+		if (chat != null) {
 			chat.render(screen);
 		}
 	}
