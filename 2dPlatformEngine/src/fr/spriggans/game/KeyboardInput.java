@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyboardInput implements KeyListener {
 
-	private static final int KEY_COUNT = 256;
+	private static final int KEY_COUNT = 1024;
 
 	private enum KeyState {
 		RELEASED, PRESSED, ONCE
