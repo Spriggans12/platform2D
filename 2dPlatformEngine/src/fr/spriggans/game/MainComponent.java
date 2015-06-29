@@ -1,11 +1,9 @@
 package fr.spriggans.game;
 
-import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -121,12 +119,7 @@ public class MainComponent extends Canvas implements Runnable {
 		game.render(screen);
 		for (int i = 0; i < screen.getPixels().length; i++)
 			pixels[i] = screen.getPixels()[i];
-		final Graphics2D g = (Graphics2D) bs.getDrawGraphics();
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-		g.setColor(new Color(0, 0, 0, 0));
-		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		g.fillRect(0, 0, getWidth(), getHeight());
+		final Graphics g = bs.getDrawGraphics();
 		g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
 		g.dispose();
 		bs.show();

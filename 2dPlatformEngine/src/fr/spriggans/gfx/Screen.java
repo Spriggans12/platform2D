@@ -74,7 +74,7 @@ public class Screen {
 					continue;
 				if (col == 0x00000000)
 					continue;
-				pixels[jPixel * width + iPixel] = col;
+				blendColor(jPixel * width + iPixel, col);
 			}
 		}
 	}
@@ -90,7 +90,7 @@ public class Screen {
 				continue;
 			if (x < compWidth1 || x > compWidth2)
 				continue;
-			pixels[jPixel * width + x] = col;
+			blendColor(jPixel * width + x, col);
 		}
 		for (int j = 0; j < h; j++) {
 			final int jPixel = j + y + dh;
@@ -98,7 +98,7 @@ public class Screen {
 				continue;
 			final int iPixel = x + w;
 			if (!(iPixel < compWidth1 || iPixel > compWidth2))
-				pixels[jPixel * width + iPixel] = col;
+				blendColor(jPixel * width + iPixel, col);
 		}
 
 		// On render les traits diagonaux
@@ -138,7 +138,7 @@ public class Screen {
 		int numerator = longest >> 1;
 		for (int i = 0; i <= longest; i++) {
 			if (!isOutsideLevel(x, y, 0, 0, afficherSiInScreenOutLevel))
-				pixels[y * width + x] = color;
+				blendColor(y * width + x, color);
 
 			numerator += shortest;
 			if (!(numerator < longest)) {
@@ -187,7 +187,7 @@ public class Screen {
 		final int yPxl = y - yOffs;
 		if (isOutsideLevel(xPxl, yPxl, 0, 0, afficherSiInScreenOutLevel))
 			return;
-		pixels[yPxl * width + xPxl] = p;
+		blendColor(yPxl * width + xPxl, p);
 	}
 
 	/** Les offsets doivent déjà avoir été fait. */
@@ -196,7 +196,7 @@ public class Screen {
 			return;
 		if (isOutsideLevel(x, y, 0, 0, afficherSiInScreenOutLevel))
 			return;
-		pixels[y * width + x] = p;
+		blendColor(y * width + x, p);
 	}
 
 	/** x,y coin NW. */
@@ -264,7 +264,7 @@ public class Screen {
 					continue;
 				final int xDiff = iPixel - xCenter;
 				if (xDiff * xDiff / rX2 + yDiff2 / rY2 < 1)
-					pixels[jPixel * width + iPixel] = col;
+					blendColor(jPixel * width + iPixel, col);
 			}
 		}
 
@@ -311,4 +311,24 @@ public class Screen {
 		this.yOffs = yOffs;
 	}
 
+	private void blendColor(int index, int color) {
+		int alpha = (color >> 24) & 0xFF;
+		if(alpha != 255) {
+			int current = pixels[index];
+			int rCurr = (current >> 16) & 0xFF;
+			int gCurr = (current >> 8) & 0xFF;
+			int bCurr = current & 0xFF;
+			int rCol = (color >> 16) & 0xFF;
+			int gCol = (color >> 8) & 0xFF;
+			int bCol = color & 0xFF;
+			float alphaF = 1 - (alpha / 255f);
+			int ar = (int) (alphaF * (rCurr - rCol) + rCol);
+			int ag = (int) (alphaF * (gCurr - gCol) + gCol);
+			int ab = (int) (alphaF * (bCurr - bCol) + bCol);
+			pixels[index] = ab | (ag << 8) | (ar << 16) | 0xFF000000;
+		}
+		else {
+			pixels[index] = color;
+		}		
+	}
 }
