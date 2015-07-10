@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 
 public class EntityAttributes {
 	public static final EntityAttributes att_player = new EntityAttributes("PLAYER");
+	public static final EntityAttributes att_basic_ennemy = new EntityAttributes("BASIC_ENNEMY");
 
 	private final String FILEPATH = "res/entities/entitiesAttributes.txt";
 	private final String WORD_SEPARATOR = ":";
