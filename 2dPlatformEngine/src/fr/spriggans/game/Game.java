@@ -25,10 +25,10 @@ public class Game {
 			final JAXBContext jabxbContext = JAXBContext.newInstance(Level.class);
 			final Unmarshaller unmarshaller = jabxbContext.createUnmarshaller();
 			final Level lvl = (Level) unmarshaller.unmarshal(new File("res/levels/level.xml"));
-			
+
 			// Et ajout du chat pour le level, TODO : si celui-ci est activé.
 			lvl.setChat(new Chat(keyboard));
-			
+
 			// Ajout de l'attribut level pour les entités.
 			for (final AbstractEntity entity : lvl.getLivingEntitiesLayer()) {
 				entity.setLevel(lvl);
@@ -44,14 +44,15 @@ public class Game {
 		}
 	}
 
-	public void tick(Screen screen) {
+	public boolean tick(Screen screen) {
 		levelList.get(currentLevelIndex).tick();
 		if (levelList.get(currentLevelIndex).isOver()) {
 			currentLevelIndex++;
 			if (currentLevelIndex == levelList.size())
-				currentLevelIndex = 0;
+				return false;
 			screen.calibrateScreenToLevel(levelList.get(currentLevelIndex).getWidth(), levelList.get(currentLevelIndex).getHeight());
 		}
+		return true;
 	}
 
 	public void render(Screen screen) {

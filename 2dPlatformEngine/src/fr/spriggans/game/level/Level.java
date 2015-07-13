@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import fr.spriggans.game.level.chat.ChatCommandInterpretor;
 import fr.spriggans.game.level.chat.IChat;
 import fr.spriggans.game.level.levelObjects.AbstractLevelElement;
 import fr.spriggans.game.level.levelObjects.background.Background;
@@ -57,7 +58,11 @@ public class Level {
 		}
 		if (chat != null) {
 			// TODO utiliser un pseudo.
-			chat.tick("Spriggans");
+			final String player = "Spriggans";
+			final String chatOutput = chat.tick(player);
+			if (chatOutput != null) {
+				ChatCommandInterpretor.interpretString(this, player, chatOutput);
+			}
 		}
 	}
 
@@ -179,5 +184,9 @@ public class Level {
 
 	public void setChat(IChat chat) {
 		this.chat = chat;
+	}
+
+	public void addMessageToChat(String autor, String msg) {
+		chat.addMessage(autor, msg);
 	}
 }

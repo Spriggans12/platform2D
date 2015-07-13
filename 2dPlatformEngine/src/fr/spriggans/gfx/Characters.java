@@ -37,14 +37,14 @@ public class Characters {
 
 	/** Les Offsets ont déjà été appliqués. */
 	public static void renderCharacter(Screen screen, int x, int y, String character, int color) {
-		try{
+		try {
 			final int characterIndex = charactersList.indexOf(character);
 			final int iChar = characterIndex % GRID_NB_ELEMENTS_H;
 			final int jChar = characterIndex / GRID_NB_ELEMENTS_W;
 			final int[] characterPixels = new int[GRID_HEIGHT * GRID_WIDTH];
 			final int iBitmapFirstPixel = iChar * GRID_WIDTH;
 			final int jBitmapFirstPixel = jChar * GRID_HEIGHT;
-	
+
 			for (int j = 0; j < GRID_HEIGHT; j++) {
 				final int jCurrentPixel = (jBitmapFirstPixel + j) * Bitmap.CHARACTER_SET.getWidth();
 				final int jj = j * GRID_WIDTH;
@@ -52,12 +52,10 @@ public class Characters {
 					characterPixels[jj + i] = Bitmap.CHARACTER_SET.getPixels()[jCurrentPixel + iBitmapFirstPixel + i];
 				}
 			}
-	
+
 			screen.renderPixelsUnicolor(characterPixels, GRID_WIDTH, GRID_HEIGHT, x - Bitmap.CHARACTER_SET.getxCenter(), y
 					- Bitmap.CHARACTER_SET.getyCenter(), color, true);
-		}
-		catch (Exception e)
-		{
+		} catch (final Exception e) {
 			System.out.println("Unknown character : " + character);
 		}
 	}

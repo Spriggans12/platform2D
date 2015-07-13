@@ -5,7 +5,9 @@ import java.awt.event.KeyListener;
 
 public class KeyboardInput implements KeyListener {
 
-	private static final int KEY_COUNT = 256;
+	private static final int KEY_COUNT = 1024;
+
+	private boolean isLockedInChat = false;
 
 	private enum KeyState {
 		RELEASED, PRESSED, ONCE
@@ -40,29 +42,39 @@ public class KeyboardInput implements KeyListener {
 	}
 
 	public boolean keyDown(int keyCode) {
-		return keys[keyCode] == KeyState.ONCE
-				|| keys[keyCode] == KeyState.PRESSED;
+		return keys[keyCode] == KeyState.ONCE || keys[keyCode] == KeyState.PRESSED;
 	}
 
 	public boolean keyDownOnce(int keyCode) {
 		return keys[keyCode] == KeyState.ONCE;
 	}
 
+	@Override
 	public synchronized void keyPressed(KeyEvent e) {
-		int keyCode = e.getKeyCode();
+		final int keyCode = e.getKeyCode();
 		if (keyCode >= 0 && keyCode < KEY_COUNT) {
 			currentKeys[keyCode] = true;
 		}
 	}
 
+	@Override
 	public synchronized void keyReleased(KeyEvent e) {
-		int keyCode = e.getKeyCode();
+		final int keyCode = e.getKeyCode();
 		if (keyCode >= 0 && keyCode < KEY_COUNT) {
 			currentKeys[keyCode] = false;
 		}
 	}
 
+	@Override
 	public void keyTyped(KeyEvent e) {
 		// Not needed
+	}
+
+	public boolean isLockedInChat() {
+		return isLockedInChat;
+	}
+
+	public void setLockedInChat(boolean isLockedInChat) {
+		this.isLockedInChat = isLockedInChat;
 	}
 }

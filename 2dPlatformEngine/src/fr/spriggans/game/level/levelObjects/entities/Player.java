@@ -16,9 +16,12 @@ public class Player extends AbstractEntity {
 
 	@Override
 	protected boolean applyInputs() {
-		boolean horizontalMovement = false;
-
 		keyboard.poll();
+
+		if (keyboard.isLockedInChat())
+			return false;
+
+		boolean horizontalMovement = false;
 
 		if (keyboard.keyDown(KeyEvent.VK_LEFT) || keyboard.keyDown(KeyEvent.VK_Q)) {
 			speedX -= groundAcceleration;
